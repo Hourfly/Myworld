@@ -1,0 +1,20 @@
+{
+  "id": "/",
+  "name": "MyWorld",
+  "short_name": "MyWorld",
+  "description": "Track, connect and explore with MyWorld.",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#07142f",
+  "theme_color": "#0755ed",
+  "icons": [
+    {
+      "src": "/assets/myworld-rabbit-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
