@@ -1,47 +1,177 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080b14">
-<title>MyWorld — Your digital world</title>
-<meta name="description" content="MyWorld workspace for tracking, travel, creative tools, digital services and portfolio projects.">
-<style>
-:root{color-scheme:dark;--bg:#080b14;--surface:#111725;--surface2:#171f30;--line:#263247;--text:#f4f7ff;--muted:#97a4b8;--purple:#a78bfa;--cyan:#5eead4;--green:#6ee7b7;--red:#fb7185}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 12% 0%,#28204d 0,transparent 32%),radial-gradient(ellipse at 90% 20%,#123743 0,transparent 28%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}button,input,select,textarea{font:inherit}button{cursor:pointer;color:inherit}a{color:inherit;text-decoration:none}.app{max-width:1440px;margin:auto;padding:22px 26px 112px}.top{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:28px}.brand{display:flex;align-items:center;gap:12px;font-size:1.15rem;font-weight:850;letter-spacing:-.04em}.logo{width:42px;height:42px;border-radius:15px;background:linear-gradient(135deg,var(--purple),var(--cyan));display:grid;place-items:center;color:#07111c;font-weight:950;font-size:20px;box-shadow:0 8px 30px #8b5cf644}.topright{display:flex;align-items:center;gap:10px}.iconbtn{position:relative;border:1px solid var(--line);background:#ffffff0b;width:42px;height:42px;border-radius:14px;display:grid;place-items:center;font-size:18px}.dot{position:absolute;right:8px;top:7px;width:8px;height:8px;background:#fb7185;border-radius:50%;box-shadow:0 0 0 3px #111725}.userchip{border:1px solid var(--line);background:#ffffff0b;padding:7px 12px;border-radius:30px;display:flex;gap:9px;align-items:center}.avatar{width:27px;height:27px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#22d3ee);display:grid;place-items:center;color:#08111b;font-weight:800}.layout{display:grid;grid-template-columns:230px minmax(0,1fr);gap:24px}.side{border:1px solid var(--line);background:#101725c9;border-radius:22px;padding:14px;height:max-content;position:sticky;top:15px}.side small{display:block;color:#718098;text-transform:uppercase;letter-spacing:.14em;font-weight:800;font-size:10px;padding:12px 10px 7px}.navitem{width:100%;display:flex;align-items:center;gap:12px;border:0;background:transparent;color:#aeb9ca;text-align:left;padding:11px 12px;border-radius:12px;margin:2px 0}.navitem:hover,.navitem.active{background:linear-gradient(100deg,#9b87fa27,#5eead417);color:white}.navitem .sym{width:22px;text-align:center;display:inline-flex;align-items:center;justify-content:center}.sym svg,.iconbtn svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.main{min-width:0}.welcome{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:4px 0 22px}.eyebrow{color:#b5a6ff;text-transform:uppercase;letter-spacing:.15em;font-weight:850;font-size:11px}.welcome h1{font-size:clamp(28px,4vw,42px);line-height:1.08;letter-spacing:-.055em;margin:8px 0}.welcome p{color:var(--muted);margin:0}.date{color:var(--muted);font-size:12px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}.stat,.panel,.module{border:1px solid var(--line);background:linear-gradient(145deg,#ffffff0d,#ffffff05);border-radius:19px}.stat{padding:16px}.stat label{display:block;color:var(--muted);font-size:12px}.stat strong{display:block;font-size:24px;margin:5px 0 1px;letter-spacing:-.04em}.stat span{font-size:11px;color:#8ce6d6}.sectiontitle{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:26px 0 13px}.sectiontitle h2{font-size:17px;margin:0;letter-spacing:-.03em}.sectiontitle p{color:var(--muted);font-size:12px;margin:3px 0 0}.modules{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 12px}.module{padding:10px 5px 12px;min-height:0;text-align:center;transition:.2s;cursor:pointer;border:0;background:transparent;box-shadow:none}.module:hover{transform:translateY(-3px)}.modulehead{display:flex;justify-content:center;align-items:center}.moduleicon{width:clamp(54px,6vw,76px);height:clamp(54px,6vw,76px);border-radius:50%;background:linear-gradient(145deg,#a78bfa30,#5eead425);border:1px solid #a99aff55;display:grid;place-items:center;color:#dcd5ff;box-shadow:inset 0 1px 0 #ffffff20,0 8px 24px #0003}.moduleicon svg{width:27px;height:27px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.arrow{display:none}.module h3{font-size:12px;margin:9px 0 2px;font-weight:750}.module p{font-size:10px;color:var(--muted);margin:0;line-height:1.3}.tag{display:inline-flex;margin-top:12px;border:1px solid #3b4560;border-radius:30px;padding:3px 8px;color:#b9c4d6;font-size:10px}.quickgrid{display:grid;grid-template-columns:1.2fr .8fr;gap:13px}.panel{padding:18px}.panel h3{margin:0 0 12px;font-size:14px}.activity{display:flex;align-items:center;gap:11px;padding:10px 0;border-top:1px solid #ffffff0c}.activity:first-of-type{border-top:0}.activity .bubble{width:34px;height:34px;border-radius:11px;background:#8b5cf622;display:grid;place-items:center}.activity b{display:block;font-size:12px}.activity span{color:var(--muted);font-size:11px}.balance{font-size:30px;letter-spacing:-.05em;font-weight:850;margin:8px 0}.btn{border:0;border-radius:12px;padding:10px 14px;background:linear-gradient(110deg,#a78bfa,#5eead4);color:#08111a;font-weight:800}.btn.secondary{background:#ffffff0a;color:#e9efff;border:1px solid var(--line)}.btn.small{padding:8px 11px;font-size:12px}.page{display:none}.page.active{display:block}.pagehead{margin-bottom:18px}.pagehead h1{font-size:30px;letter-spacing:-.05em;margin:0 0 5px}.pagehead p{color:var(--muted);margin:0}.toolgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.formpanel{padding:18px;border:1px solid var(--line);background:#111827;border-radius:18px}.formpanel h3{margin:0 0 14px}.field{display:grid;gap:6px;margin:11px 0}.field label{font-size:12px;color:#b8c3d5}.field input,.field select,.field textarea{width:100%;padding:11px 12px;background:#090f1b;border:1px solid #344158;border-radius:11px;color:white;outline:none}.field textarea{min-height:85px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:#a78bfa}.muted{color:var(--muted)}.empty{padding:30px;text-align:center;color:var(--muted);border:1px dashed #3a465b;border-radius:15px}.bottomnav{position:fixed;z-index:10;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:5px;padding:8px;border:1px solid #ffffff25;background:#111827df;backdrop-filter:blur(24px);border-radius:22px;box-shadow:0 15px 45px #0008}.bottomnav button{border:0;background:transparent;color:#aeb9ca;border-radius:14px;padding:9px 18px;display:flex;align-items:center;gap:8px;font-size:12px}.bottomnav button.active{background:linear-gradient(110deg,#a78bfa33,#5eead422);color:white}.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);padding:12px 16px;background:#1b2940;border:1px solid #50617c;border-radius:12px;display:none;z-index:20;box-shadow:0 12px 35px #0008}.toast.show{display:block}.drawer{position:fixed;inset:0;background:#0009;z-index:30;display:none;justify-content:flex-end}.drawer.open{display:flex}.drawerbody{width:min(390px,90vw);height:100%;overflow:auto;background:#101827;border-left:1px solid var(--line);padding:22px}.drawerhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.drawerhead h2{margin:0}.close{border:1px solid var(--line);background:#ffffff0a;border-radius:10px;padding:8px 12px}.menurow{display:flex;justify-content:space-between;align-items:center;padding:14px 8px;border-bottom:1px solid #ffffff10;color:#dbe5f4}.menurow span:last-child{color:#7f8ca2}.notice{padding:12px;border:1px solid var(--line);border-radius:13px;margin:10px 0;background:#ffffff06}.notice b{font-size:13px}.notice p{margin:4px 0 0;color:var(--muted);font-size:12px}
-@media(max-width:950px){.layout{grid-template-columns:1fr}.side{display:none}}@media(max-width:600px){.app{padding:15px 14px 110px}.top{margin-bottom:22px}.userchip .username{display:none}.welcome{align-items:flex-start;flex-direction:column}.date{display:none}.toolgrid{grid-template-columns:1fr}.modules{grid-template-columns:repeat(4,minmax(0,1fr));gap:15px 5px}.module{min-height:0;padding:8px 1px}.moduleicon{width:clamp(48px,14vw,64px);height:clamp(48px,14vw,64px)}.moduleicon svg{width:23px;height:23px}.module h3{font-size:10px;margin:7px 0 2px;line-height:1.2}.module p{font-size:9px;line-height:1.2}.bottomnav{width:calc(100% - 24px);justify-content:space-around;bottom:10px}.bottomnav button{padding:9px 10px;flex:1;justify-content:center;flex-direction:column;gap:2px;font-size:10px}.bottomnav .sym{display:flex;align-items:center;justify-content:center}.bottomnav .sym svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.stats{gap:9px}.stat{padding:13px}.stat strong{font-size:21px}}
-</style></head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0A0D1A">
+  <meta name="description" content="MyWorld — your digital world in one place.">
+  <title>MyWorld | Your Digital World</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* MyWorld theme — edit these variables to change the palette */
+    :root {
+      color-scheme: dark;
+      --page: #0A0D1A;
+      --card: #141A2E;
+      --border: #232B47;
+      --text: #F2F4FA;
+      --muted: #A3ABC2;
+      --violet: #A99BFF;
+      --teal: #4FD1C5;
+      --nav-height: 76px;
+    }
+    * { box-sizing: border-box; }
+    html { min-height: 100%; background: var(--page); }
+    body {
+      margin: 0; min-height: 100vh; background: var(--page); color: var(--text);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, input { font: inherit; }
+    a { color: inherit; text-decoration: none; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    .shell { width: 100%; max-width: 430px; min-height: 100vh; margin: 0 auto; padding: 20px 16px calc(var(--nav-height) + 34px + env(safe-area-inset-bottom)); }
+    .header { display: flex; align-items: center; gap: 11px; min-height: 48px; margin-bottom: 30px; }
+    .brand { display: flex; align-items: center; gap: 11px; min-width: 0; margin-right: auto; }
+    .logo { width: 40px; height: 40px; flex: 0 0 40px; display: grid; place-items: center; border-radius: 13px; color: #08101B; background: linear-gradient(135deg,#A99BFF,#4FD1C5); font-size: 22px; font-weight: 800; }
+    .brand-name { font-size: 20px; line-height: 1; font-weight: 800; letter-spacing: -.7px; }
+    .header-btn { width: 44px; height: 44px; min-width: 44px; display: grid; place-items: center; border: 1px solid var(--border); border-radius: 50%; background: var(--card); color: var(--text); position: relative; }
+    .header-btn svg { width: 21px; height: 21px; }
+    .avatar { border: 0; border-radius: 50%; color: white; background: linear-gradient(135deg,#5D82FF,#A99BFF); font-weight: 700; font-size: 17px; }
+    .eyebrow { margin: 0 0 10px; color: var(--violet); font-size: 12px; font-weight: 800; letter-spacing: 2px; }
+    h1 { margin: 0 0 24px; font-size: 30px; line-height: 1.15; font-weight: 800; letter-spacing: -1.25px; }
+    .search { height: 48px; display: flex; align-items: center; gap: 12px; padding: 0 14px; margin-bottom: 18px; border: 1px solid var(--border); border-radius: 14px; background: var(--card); }
+    .search svg { width: 20px; height: 20px; flex: 0 0 auto; color: var(--muted); }
+    .search input { width: 100%; min-width: 0; padding: 0; border: 0; outline: 0; color: var(--text); background: transparent; font-size: 14px; }
+    .search input::placeholder { color: #858EA7; opacity: 1; }
+    .hero { min-height: 98px; display: flex; align-items: center; gap: 14px; padding: 16px; margin-bottom: 20px; border-radius: 20px; background: linear-gradient(110deg,#2A2470 0%,#203D68 55%,#0F5C63 100%); transition: transform .18s ease, filter .18s ease; }
+    .hero:active, .room:active { transform: scale(.985); }
+    .hero-icon { width: 48px; height: 48px; flex: 0 0 48px; display: grid; place-items: center; border-radius: 16px; background: #FFFFFF20; color: white; }
+    .hero-icon svg { width: 28px; height: 28px; }
+    .hero-copy { min-width: 0; flex: 1; }
+    .hero h2 { margin: 0 0 4px; font-size: 17px; line-height: 1.2; font-weight: 700; }
+    .hero p { margin: 0; color: #D3D9EA; font-size: 13px; line-height: 1.45; }
+    .chevron { width: 22px; height: 22px; flex: 0 0 auto; }
+    .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 12px; }
+    .section-heading h2 { margin: 0; font-size: 18px; font-weight: 700; letter-spacing: -.5px; }
+    .section-heading span { color: var(--muted); font-size: 12px; white-space: nowrap; }
+    .rooms { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+    .room { min-width: 0; min-height: 150px; padding: 14px; display: flex; flex-direction: column; align-items: flex-start; border: 1px solid var(--border); border-radius: 18px; background: var(--card); transition: border-color .18s ease, transform .18s ease, background .18s ease; }
+    .room:hover { border-color: #465176; background: #182039; }
+    .room-icon { width: 40px; height: 40px; flex: 0 0 40px; display: grid; place-items: center; margin-bottom: 12px; border-radius: 13px; }
+    .room-icon svg { width: 22px; height: 22px; }
+    .blue { color: #80B4FF; background: #263653; }
+    .purple { color: #C6A1FF; background: #302C4C; }
+    .orange { color: #FFB36A; background: #39323A; }
+    .teal { color: #55DCC4; background: #1D3A42; }
+    .pink { color: #FF86B5; background: #3A2A43; }
+    .green { color: #9BEA62; background: #293B35; }
+    .room h3 { margin: 0 0 3px; font-size: 14px; line-height: 1.25; font-weight: 700; }
+    .room p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.4; }
+    .empty { display: none; grid-column: 1/-1; padding: 22px 12px; text-align: center; color: var(--muted); border: 1px dashed var(--border); border-radius: 16px; font-size: 13px; }
+    .bottom-nav { position: fixed; z-index: 5; left: 50%; bottom: 0; transform: translateX(-50%); width: min(100%,430px); display: grid; grid-template-columns: repeat(5,1fr); gap: 4px; padding: 8px 10px calc(8px + env(safe-area-inset-bottom)); border: 1px solid var(--border); border-bottom: 0; border-radius: 24px 24px 0 0; background: rgba(20,26,46,.96); backdrop-filter: blur(18px); }
+    .tab { min-width: 0; min-height: 56px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; border: 0; border-radius: 15px; background: transparent; color: var(--muted); font-size: 10px; font-weight: 600; }
+    .tab svg { width: 20px; height: 20px; }
+    .tab.active { color: var(--text); background: #232B47; }
+    .header-btn:focus-visible, .hero:focus-visible, .room:focus-visible, .tab:focus-visible, .search input:focus-visible { outline: 2px solid var(--violet); outline-offset: 3px; }
+    @media (min-width: 600px) { body { background: #070A13; } .shell { border-left: 1px solid #151B2C; border-right: 1px solid #151B2C; } }
+    @media (prefers-reduced-motion: reduce) { *,*::before,*::after { scroll-behavior: auto !important; transition: none !important; } }
+  </style>
+</head>
 <body>
-<div class="app">
-<header class="top"><a class="brand" href="#" onclick="showPage('home');return false"><span class="logo">M</span><span>MyWorld</span></a><div class="topright"><button class="iconbtn" title="Messages" onclick="openDrawer('messages')"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg><i class="dot"></i></button><button class="iconbtn" title="Notifications" onclick="openDrawer('notifications')"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg><i class="dot"></i></button><button class="iconbtn" title="Menu" onclick="openDrawer('menu')"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><div class="userchip"><span class="avatar">G</span><span class="username">My account</span></div></div></header>
-<div class="layout">
-<aside class="side"><small>Workspace</small><button class="navitem active" data-page="home" onclick="showPage('home')"><span class="sym"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10h-6v-7H9v7H3z"/></svg></span>Home</button><button class="navitem" data-page="projects" onclick="showPage('projects')"><span class="sym"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg></span>Projects</button><button class="navitem" data-page="profile" onclick="showPage('profile')"><span class="sym"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>Profile</button><button class="navitem" data-page="settings" onclick="showPage('settings')"><span class="sym"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 13a7 7 0 0 0 0-2l2-1-2-4-2 1-2-1-.5-2h-5L9 6 7 7 5 6l-2 4 2 1v2l-2 1 2 4 2-1 2 1 .5 2h5l.5-2 2-1 2 1 2-4z"/></svg></span>Settings</button><small>MyWorld rooms</small><div id="sideModules"></div><small>Account</small><button class="navitem" onclick="openDrawer('wallet')"><span class="sym">◈</span>Wallet</button><button class="navitem" onclick="openDrawer('menu')"><span class="sym">☷</span>More services</button></aside>
-<main class="main">
-<section class="page active" id="page-home"><div class="welcome"><div><div class="eyebrow">Your digital world, in one place</div><h1>Welcome to MyWorld</h1><p>Your workspace for creative tools, services, journeys and projects.</p></div><div class="date" id="today"></div></div>
-<div class="sectiontitle"><div><h2>Explore MyWorld</h2><p>Choose a room to get started.</p></div><span class="muted" style="font-size:11px">7 rooms</span></div><div class="modules" id="homeModules"></div>
-</section>
-<section class="page" id="page-projects"><div class="pagehead"><h1>Projects</h1><p>Your SpiderWEB sites and saved work will be collected here.</p></div><div class="panel"><div class="empty">No projects yet. Start by opening SpiderWEB.</div><button class="btn" style="margin-top:14px" onclick="showPage('spiderweb')">Create a website</button></div></section>
-<section class="page" id="page-profile"><div class="pagehead"><h1>Profile</h1><p>Manage your MyWorld identity.</p></div><div class="formpanel"><div class="field"><label>Display name</label><input placeholder="Your name"></div><div class="field"><label>Email address</label><input type="email" placeholder="you@example.com"></div><div class="field"><label>Phone number</label><input placeholder="+234"></div><button class="btn" onclick="toast('Profile saving will be enabled when account services are connected.')">Save profile</button></div></section>
-<section class="page" id="page-settings"><div class="pagehead"><h1>Settings</h1><p>Personalize your workspace and account security.</p></div><div class="toolgrid"><div class="formpanel"><h3>Appearance</h3><div class="field"><label>Theme</label><select id="themeSelect" onchange="setTheme(this.value)"><option value="dark">Dark</option><option value="light">Light (coming soon)</option></select></div><div class="field"><label>Text size</label><select><option>Medium</option><option>Small</option><option>Large</option></select></div><div class="field"><label>Device preview</label><select><option>Automatic</option><option>iPhone 18</option><option>iPhone XR</option><option>iPhone 15</option><option>iPhone 8</option><option>Samsung Galaxy S10</option><option>iPad</option><option>Techno Smart 10</option></select></div></div><div class="formpanel"><h3>Security</h3><div class="menurow">Two-factor authentication <span>Set up →</span></div><div class="menurow">Change password <span>Manage →</span></div><div class="menurow">Email and phone <span>Manage →</span></div><p class="muted" style="font-size:12px">Account security controls will be connected to secure sign-in services.</p></div></div></section>
-<section class="page" id="page-tracking"><div class="pagehead"><h1>Live Tracking</h1><p>Create a shipment record and manage its tracking details.</p></div><div class="toolgrid"><div class="formpanel"><h3>New shipment</h3><div class="field"><label>Recipient full name</label><input placeholder="Recipient name"></div><div class="field"><label>Origin</label><input placeholder="City, country"></div><div class="field"><label>Destination</label><input placeholder="City, country"></div><div class="field"><label>Carrier</label><select><option>DHL Express</option><option>FedEx</option><option>UPS</option><option>Other carrier</option></select></div><div class="field"><label>Transport type</label><select><option>Air freight</option><option>Road</option><option>Sea freight</option></select></div><button class="btn" onclick="toast('Shipment creation requires the secure tracking service to be connected.')">Create shipment</button></div><div class="formpanel"><h3>Shipment workspace</h3><div class="empty">Your created shipments, receipts, tracking links and conversations will appear here.</div></div></div></section>
-<section class="page" id="page-fly"><div class="pagehead"><h1>Fly Abroad</h1><p>Organize passenger details and travel documents.</p></div><div class="formpanel"><div class="field"><label>Passenger name</label><input placeholder="Full name as on passport"></div><div class="field"><label>Destination</label><input placeholder="City and country"></div><div class="field"><label>Airline preference</label><input placeholder="Preferred airline"></div><div class="field"><label>Travel date</label><input type="date"></div><div class="field"><label>Passenger photo</label><input type="file" accept="image/*"></div><button class="btn" onclick="toast('Travel document generation requires verified booking and airline integrations.')">Continue</button></div></section>
-<section class="page" id="page-identify"><div class="pagehead"><h1>Identify Me</h1><p>Discover resources published by the MyWorld team.</p></div><div class="panel"><div class="empty">No resources have been published yet.</div></div></section>
-<section class="page" id="page-hail"><div class="pagehead"><h1>HAIL Al Mary</h1><p>Creative AI studio for image and video transformations.</p></div><div class="modules"><article class="module"><div class="moduleicon">✦</div><h3>Image headswap</h3><p>100 coins per image transformation.</p><span class="tag">Image studio</span></article><article class="module"><div class="moduleicon">◉</div><h3>Video face swap</h3><p>300 coins per 10 seconds.</p><span class="tag">Video studio</span></article></div><div class="panel" style="margin-top:14px"><div class="empty">Connect an approved AI model provider to enable generation. Only use images and videos with the subject's permission.</div></div></section>
-<section class="page" id="page-chat"><div class="pagehead"><h1>Business Chat</h1><p>Create fictional chat mockups for concepts and presentations.</p></div><div class="formpanel"><div class="field"><label>Chat platform style</label><select><option>WhatsApp</option><option>Instagram</option><option>Facebook Messenger</option><option>X</option><option>LINE</option></select></div><div class="field"><label>Display name</label><input placeholder="Fictional contact name"></div><div class="field"><label>Messages</label><textarea placeholder="Write sample messages and replies..."></textarea></div><button class="btn" onclick="toast('Chat mockup editor is the next module to implement. Downloads will be labelled as mockups.')">Build chat</button></div></section>
-<section class="page" id="page-social"><div class="pagehead"><h1>My Social</h1><p>Marketplace for authorized digital products and subscriptions.</p></div><div class="field"><input placeholder="Search products and services"></div><div class="modules"><article class="module"><div class="moduleicon">✉</div><h3>Email services</h3><p>Browse authorized email-related services.</p></article><article class="module"><div class="moduleicon">▣</div><h3>Streaming</h3><p>Browse legitimate streaming subscriptions.</p></article><article class="module"><div class="moduleicon">◇</div><h3>VPN</h3><p>Browse VPN subscriptions and plans.</p></article><article class="module"><div class="moduleicon">◎</div><h3>Social services</h3><p>Browse permitted social media services.</p></article></div><p class="muted" style="font-size:12px;margin-top:14px">Marketplace listings, checkout and delivery require verified payment and supplier integrations. Sale of personal account credentials is not supported.</p></section>
-<section class="page" id="page-spiderweb"><div class="pagehead"><h1>SpiderWEB</h1><p>Create a lightweight portfolio or business website.</p></div><div class="formpanel"><div class="field"><label>Website / business name</label><input placeholder="Your brand name"></div><div class="field"><label>Describe your website</label><textarea placeholder="Tell us about your work, services and audience..."></textarea></div><div class="field"><label>Hosting duration</label><select><option>3 months — ₦25,000</option><option>6 months — ₦45,000</option><option>9 months — ₦72,000</option><option>12 months — ₦110,000</option></select></div><div class="field"><label>Logo or brand image</label><input type="file" accept="image/*"></div><button class="btn" onclick="toast('Website builder and subscription checkout are being connected.')">Start website</button></div></section>
-</main></div></div>
-<nav class="bottomnav"><button class="active" data-page="home" onclick="showPage('home')"><span class="sym"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10h-6v-7H9v7H3z"/></svg></span>Home</button><button data-page="projects" onclick="showPage('projects')"><span class="sym"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg></span>Projects</button><button data-page="profile" onclick="showPage('profile')"><span class="sym"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>Profile</button><button data-page="settings" onclick="showPage('settings')"><span class="sym"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 13a7 7 0 0 0 0-2l2-1-2-4-2 1-2-1-.5-2h-5L9 6 7 7 5 6l-2 4 2 1v2l-2 1 2 4 2-1 2 1 .5 2h5l.5-2 2-1 2 1 2-4z"/></svg></span>Settings</button></nav>
-<div class="toast" id="toast"></div>
-<div class="drawer" id="drawer" onclick="if(event.target===this)closeDrawer()"><div class="drawerbody"><div class="drawerhead"><h2 id="drawerTitle">Menu</h2><button class="close" onclick="closeDrawer()">Close</button></div><div id="drawerContent"></div></div></div>
-<script>
-const rooms=[['tracking','Live Tracking','Shipment waybills, route progress and connected messages.','tracking'],['fly','Fly Abroad','Travel details, flight documents and journey information.','fly'],['identify','Identify Me','Unlock useful resources published by administrators.','identify'],['hail','HAIL Al Mary','AI image and video creative studio.','hail'],['chat','Business Chat','Create fictional social chat mockups.','chat'],['social','My Social','Explore authorized digital services and subscriptions.','social'],['spiderweb','SpiderWEB','Build and host a lightweight portfolio website.','spiderweb']];
-function roomCard(r){return '<article class="module" onclick="showPage(\''+r[0]+'\')"><div class="modulehead"><div class="moduleicon">'+icon(r[3])+'</div></div><h3>'+r[1]+'</h3><p>'+r[2]+'</p></article>'}
-function icon(n){const p={"tracking":"<path d=\"M3 11 21 3l-8 18-2-8z\"/><path d=\"m11 13 5-5\"/>","fly":"<path d=\"m2 16 20-5-20-5 4 5z\"/><path d=\"m6 11-2 8 6-6\"/>","identify":"<rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"3\"/><circle cx=\"12\" cy=\"9\" r=\"2.5\"/><path d=\"M8 17c1-2.5 7-2.5 8 0\"/>","hail":"<path d=\"m12 3 2 6 6 2-6 2-2 6-2-6-6-2 6-2z\"/>","chat":"<path d=\"M20 11a8 8 0 0 1-8 8H6l-3 2v-6a8 8 0 1 1 17-3z\"/><path d=\"M8 10h8M8 14h5\"/>","social":"<circle cx=\"8\" cy=\"8\" r=\"3\"/><circle cx=\"17\" cy=\"7\" r=\"2\"/><path d=\"M2 20a6 6 0 0 1 12 0m0-6a4 4 0 0 1 8 2v4\"/>","spiderweb":"<circle cx=\"12\" cy=\"12\" r=\"2\"/><circle cx=\"12\" cy=\"12\" r=\"8\"/><path d=\"M12 4v6m0 4v6M4 12h6m4 0h6M6 6l4 4m4 4 4 4m0-12-4 4m-4 4-4 4\"/>"};return '<svg viewBox="0 0 24 24" aria-hidden="true">'+(p[n]||p.chat)+'</svg>'}
-document.getElementById('homeModules').innerHTML=rooms.map(roomCard).join('');
-document.getElementById('sideModules').innerHTML=rooms.map(r=>'<button class="navitem" data-page="'+r[0]+'" onclick="showPage(\''+r[0]+'\')"><span class="sym">'+r[3]+'</span>'+r[1]+'</button>').join('');
-document.getElementById('today').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric',year:'numeric'});
-function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+id));document.querySelectorAll('[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'});closeDrawer()}
-function toast(s){const t=document.getElementById('toast');t.textContent=s;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3600)}
-function openDrawer(type){const d=document.getElementById('drawer'),title=document.getElementById('drawerTitle'),c=document.getElementById('drawerContent');d.classList.add('open');const items={menu:['API access','Affiliate programme','Learn trading','Wallet','Membership plans','WhatsApp & Telegram','Become an administrator','Redeem gift card','Withdraw funds'],messages:['No conversations yet. Messages from your shipment and customer rooms will appear here.'],notifications:['No new notifications. Updates and account alerts will appear here.'],wallet:['Available balance: ₦0.00','Add funds','Transaction history','Withdraw funds']};title.textContent=type==='menu'?'More services':type==='wallet'?'My wallet':type==='messages'?'Messages':'Notifications';c.innerHTML=(items[type]||[]).map((x,i)=>'<div class="menurow"><span>'+x+'</span><span>'+(type==='menu'?'→':'')+'</span></div>').join('')+(type==='menu'?'<p class="muted" style="font-size:12px;margin-top:18px">Account, payments and administrator services will be activated as secure backend modules are connected.</p>':'')}
-function closeDrawer(){document.getElementById('drawer').classList.remove('open')}
-function setTheme(v){if(v==='light')toast('Light theme will be added with the full appearance settings.')}
-</script></body></html>
+  <main class="shell">
+    <!-- Header -->
+    <header class="header">
+      <a class="brand" href="index.html" aria-label="MyWorld home">
+        <span class="logo" aria-hidden="true">M</span><span class="brand-name">MyWorld</span>
+      </a>
+      <a class="header-btn" href="notifications.html" aria-label="Notifications">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg>
+      </a>
+      <a class="header-btn avatar" href="profile.html" aria-label="Your profile">G</a>
+    </header>
+
+    <!-- Welcome -->
+    <p class="eyebrow">YOUR DIGITAL WORLD</p>
+    <h1>Welcome back, G</h1>
+
+    <!-- Live room search -->
+    <label class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg>
+      <input id="roomSearch" type="search" placeholder="Search rooms, tools, projects" autocomplete="off" aria-label="Search rooms, tools and projects">
+    </label>
+
+    <!-- Featured room -->
+    <a class="hero searchable" href="live-tracking.html" data-search="live tracking shipment waybills route progress connected messages">
+      <span class="hero-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-8-8 18-2-8-8-2Z"/><path d="m11 13 5-5"/></svg>
+      </span>
+      <span class="hero-copy"><h2>Live Tracking</h2><p>Waybills, route progress and connected messages.</p></span>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+    </a>
+
+    <!-- Six additional rooms -->
+    <section aria-labelledby="moreRoomsTitle">
+      <div class="section-heading"><h2 id="moreRoomsTitle">More rooms</h2><span id="roomCount">7 total</span></div>
+      <div class="rooms" id="roomGrid">
+        <a class="room searchable" href="fly-abroad.html" data-search="fly abroad flights documents journeys travel">
+          <span class="room-icon blue" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m2 16 20-5-20-5 4 5-4 5Z"/><path d="m6 11-2 8 6-6"/></svg></span>
+          <h3>Fly Abroad</h3><p>Flights, documents and journeys.</p>
+        </a>
+        <a class="room searchable" href="identify-me.html" data-search="identify me resources admins country links">
+          <span class="room-icon purple" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2.5" width="16" height="19" rx="3"/><circle cx="12" cy="9" r="2.6"/><path d="M8 17c1.1-2.4 6.9-2.4 8 0"/></svg></span>
+          <h3>Identify Me</h3><p>Resources from admins.</p>
+        </a>
+        <a class="room searchable" href="hail-ai-mary.html" data-search="hail ai mary image video studio headswap">
+          <span class="room-icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2.8 2.1 6.1 6.1 2.1-6.1 2.1-2.1 6.1-2.1-6.1-6.1-2.1 6.1-2.1L12 2.8Z"/></svg></span>
+          <h3>HAIL AI Mary</h3><p>AI image and video studio.</p>
+        </a>
+        <a class="room searchable" href="business-chat.html" data-search="business chat whatsapp instagram mockups messages">
+          <span class="room-icon teal" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.2a7.8 7.8 0 0 1-8 7.8H6l-3 2v-6a8 8 0 1 1 17-3.8Z"/><path d="M8 10h8M8 14h5"/></svg></span>
+          <h3>Business Chat</h3><p>Fictional chat mockups.</p>
+        </a>
+        <a class="room searchable" href="my-social.html" data-search="my social digital services subscriptions marketplace">
+          <span class="room-icon pink" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="7.5" r="3.2"/><path d="M2.5 20a6 6 0 0 1 12 0M16 4.8a3 3 0 0 1 0 5.8M17 14a5 5 0 0 1 4.5 5"/></svg></span>
+          <h3>My Social</h3><p>Digital services and plans.</p>
+        </a>
+        <a class="room searchable" href="spiderweb.html" data-search="spiderweb portfolio website builder hosting">
+          <span class="room-icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4"/></svg></span>
+          <h3>SpiderWEB</h3><p>Build a portfolio site.</p>
+        </a>
+        <p class="empty" id="noResults">No rooms match your search.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Fixed bottom navigation -->
+  <nav class="bottom-nav" aria-label="Main navigation">
+    <a class="tab active" href="index.html" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10H3z"/><path d="M9 20v-7h6v7"/></svg><span>Home</span></a>
+    <a class="tab" href="projects.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg><span>Projects</span></a>
+    <a class="tab" href="inbox.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="15" rx="2.5"/><path d="m4 6 8 7 8-7"/></svg><span>Inbox</span></a>
+    <a class="tab" href="profile.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Profile</span></a>
+    <a class="tab" href="settings.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.7 2.9-.2-.1a1.7 1.7 0 0 0-1.8.2l-.2.1h-3.4l-.1-.2a1.7 1.7 0 0 0-1.5-1l-.2-.1-1.7-2.9.1-.2a1.7 1.7 0 0 0-.3-1.8l-.1-.2v-3.4l.2-.1a1.7 1.7 0 0 0 1-1.5l.1-.2 2.9-1.7.2.1a1.7 1.7 0 0 0 1.8-.3l.2-.1h3.4l.1.2a1.7 1.7 0 0 0 1.5 1l.2.1 1.7 2.9-.1.2a1.7 1.7 0 0 0 .3 1.8l.1.2v3.4z"/></svg><span>Settings</span></a>
+  </nav>
+
+  <script>
+    // Filter both the featured Live Tracking card and the six room cards as the user types.
+    const searchInput = document.getElementById('roomSearch');
+    const searchableCards = [...document.querySelectorAll('.searchable')];
+    const roomCount = document.getElementById('roomCount');
+    const noResults = document.getElementById('noResults');
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.trim().toLowerCase();
+      let visible = 0;
+      searchableCards.forEach(card => {
+        const matches = card.dataset.search.toLowerCase().includes(query);
+        card.hidden = !matches;
+        if (matches) visible++;
+      });
+      roomCount.textContent = query ? visible + (visible === 1 ? ' match' : ' matches') : '7 total';
+      noResults.style.display = visible === 0 ? 'block' : 'none';
+    });
+  </script>
+</body>
+</html>
