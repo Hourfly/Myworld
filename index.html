@@ -187,8 +187,8 @@ async function loadShipmentInbox(){
   const rows=d.conversations||[];
   box.innerHTML=rows.length?rows.map(x=>{
    const company=x.carrier_support_name||x.carrier_name||'Assigned shipping company';
-   const preview=x.last_message?.body?.startsWith('MWCHAT_IMAGE:')?'📷 Image attachment':x.last_message?.body||'No messages yet';
-   return '<a class="inbox-conversation" href="chat.html?shipment_id='+encodeURIComponent(x.id)+'" aria-label="Open conversation for shipment '+escapeInbox(x.tracking_code)+'">'+
+   const preview=x.last_message?(x.last_message.body?.startsWith('MWCHAT_IMAGE:')?'📷 Image attachment':(x.last_message.sender_role==='owner'?'You: ':'')+(x.last_message.body||'')):'No messages yet';
+   return '<a class="inbox-conversation" href="chat.html?shipment_id='+encodeURIComponent(x.id)+'&mode=owner" aria-label="Open conversation for shipment '+escapeInbox(x.tracking_code)+'">'+
     '<span class="inbox-avatar">'+escapeInbox((x.recipient_name||'R').slice(0,1).toUpperCase())+'</span>'+
     '<span class="inbox-copy"><strong>'+escapeInbox(x.recipient_name||'Shipment recipient')+'</strong>'+
     '<small>'+escapeInbox(company)+' · '+escapeInbox(x.title||'Shipment')+'</small>'+
