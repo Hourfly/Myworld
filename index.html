@@ -85,7 +85,7 @@ html[data-theme="light"] .tab.active{background:#E8EAF8}
 @media(min-width:700px){.app{padding-left:30px;padding-right:30px}.rooms{gap:14px}.room{min-height:145px;padding:15px}.room-icon{width:39px;height:39px}.room h3{font-size:13px}.room p{font-size:11px}}
 @media(max-width:350px){.app{padding-left:12px;padding-right:12px}.rooms{gap:6px}.room{padding:9px 7px;min-height:118px}.room h3{font-size:10px}.room p{font-size:9px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
- .inbox-list{display:grid;gap:10px}.inbox-conversation{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid var(--line);border-radius:15px;background:var(--card);color:var(--text);text-decoration:none}.inbox-avatar{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:#e5efff;color:#0755ed;font-weight:800;flex:none}.inbox-copy{min-width:0;flex:1}.inbox-copy strong,.inbox-copy small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.inbox-copy small{color:var(--muted);margin-top:4px;font-size:12px}.inbox-unread{min-width:22px;height:22px;border-radius:50%;background:#0755ed;color:white;display:grid;place-items:center;font-size:11px}
+ .inbox-list{display:grid;gap:12px}.inbox-conversation{display:flex;align-items:center;gap:12px;padding:15px;border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--text);text-decoration:none;transition:border-color .16s,transform .16s}.inbox-conversation:active{transform:scale(.99)}.inbox-conversation:hover{border-color:#8291b4}.inbox-avatar{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:#e5efff;color:#0755ed;font-weight:800;flex:none}.inbox-copy{min-width:0;flex:1}.inbox-copy strong,.inbox-copy small,.inbox-preview,.inbox-reference{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.inbox-copy strong{font-size:14px}.inbox-copy small{color:var(--muted);margin-top:4px;font-size:11px}.inbox-preview{margin-top:6px;color:var(--text);font-size:12px}.inbox-reference{margin-top:4px;color:var(--muted);font-size:10px;letter-spacing:.2px}.inbox-side{display:flex;flex-direction:column;align-items:flex-end;gap:7px;flex:none}.inbox-time{color:var(--muted);font-size:10px}.inbox-unread{min-width:22px;height:22px;padding:0 6px;border-radius:12px;background:#0755ed;color:white;display:grid;place-items:center;font-size:11px;font-weight:800}
 </style>
 </head>
 <body>
@@ -112,7 +112,7 @@ html[data-theme="light"] .tab.active{background:#E8EAF8}
 </div>
 </section>
 <section class="view" id="view-projects"><p class="eyebrow">YOUR WORKSPACE</p><h1>Projects</h1><p class="muted">Your MyWorld projects will live here, within the same app shell.</p><div class="panel"><h2>Projects workspace</h2><p class="muted">The Projects page is now part of the unified navigation. Project creation and saved project data still need their own feature implementation.</p></div></section>
-<section class="view" id="view-inbox"><p class="eyebrow">MESSAGES</p><h1>Inbox</h1><p class="muted">Shipment recipients and their latest messages.</p><div id="shipmentInbox" class="inbox-list"><div class="panel">Loading conversations…</div></div></section>
+<section class="view" id="view-inbox"><p class="eyebrow">MESSAGES</p><h1>Inbox</h1><p class="muted">Each shipment has its own private conversation with its assigned shipping company.</p><div id="shipmentInbox" class="inbox-list"><div class="panel">Loading conversations…</div></div></section>
 <section class="view" id="view-marketplace"><p class="eyebrow">DISCOVER & SHOP</p><h1>Marketplace</h1><p class="muted">Explore digital products, services and useful resources from MyWorld.</p><div class="panel"><h2>Marketplace is coming soon</h2><p class="muted">The marketplace experience is now inside the shared website shell. Products and services will appear here when they are configured.</p></div></section>
 <section class="view" id="view-settings"><p class="eyebrow">PREFERENCES & SECURITY</p><h1>Settings</h1><p class="muted">Control how MyWorld looks and keep your account secure.</p>
 <div class="panel"><h2>Appearance</h2><p class="muted">Preferences are shared across all sections on this device.</p>
@@ -175,7 +175,33 @@ function closeMenu(){ $('menuDrawer').classList.remove('open');$('menuBackdrop')
 $('menuButton').addEventListener('click',openMenu);$('menuClose').addEventListener('click',closeMenu);$('menuBackdrop').addEventListener('click',closeMenu);
 document.querySelectorAll('[data-menu-route]').forEach(b=>b.addEventListener('click',()=>{location.hash='#menu-'+b.dataset.menuRoute;closeMenu()}));
 function renderMenuPage(key){const data=menuPages[key];if(!data)return;$('menuPageTitle').textContent=data[0];$('menuPageIntro').textContent=data[1];if(key==='community'){$('menuPageContent').innerHTML='<a class="menu-page-card" href="https://chat.whatsapp.com/CxH7V0rcQZOB9fDSvNKUWO" target="_blank" rel="noopener noreferrer"><h3>WhatsApp Community ↗</h3><p>Join the official MyWorld WhatsApp group.</p><span class="planned">OPEN WHATSAPP</span></a><a class="menu-page-card" href="https://t.me/+9x3AK8izEDUwMWZk" target="_blank" rel="noopener noreferrer"><h3>Telegram Community ↗</h3><p>Join the official MyWorld Telegram group.</p><span class="planned">OPEN TELEGRAM</span></a>';return}$('menuPageContent').innerHTML=data[2].map(line=>'<div class="menu-page-card"><p>'+line.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</p><span class="planned">BACKEND SETUP REQUIRED</span></div>').join('')}
-let inboxRefreshTimer=null;async function loadShipmentInbox(){const box=$('shipmentInbox');if(!box)return;try{let s;try{s=JSON.parse(localStorage.getItem(STORE)||'null')}catch{}if(!s?.access_token)throw Error('Sign in to view recipient messages.');const r=await fetch(API+'/functions/v1/shipment-service',{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+s.access_token,'Content-Type':'application/json'},body:JSON.stringify({action:'chat-inbox'})});const d=await r.json();if(!r.ok)throw Error(d.error||'Inbox could not be loaded.');const rows=d.conversations||[];box.innerHTML=rows.length?rows.map(x=>'<a class="inbox-conversation" href="chat.html?shipment_id='+encodeURIComponent(x.id)+'"><span class="inbox-avatar">'+escapeInbox((x.recipient_name||'R').slice(0,1).toUpperCase())+'</span><span class="inbox-copy"><strong>'+escapeInbox(x.recipient_name||'Shipment recipient')+'</strong><small>'+escapeInbox(x.title||x.tracking_code)+' · '+escapeInbox(x.last_message?.body?.startsWith('MWCHAT_IMAGE:')?'📷 Image':x.last_message?.body||'No messages yet')+'</small></span>'+(x.unread_count?'<b class="inbox-unread">'+x.unread_count+'</b>':'')+'</a>').join(''):'<div class="panel">No recipient conversations yet. Messages sent from shipment tracking links will appear here.</div>'}catch(e){box.innerHTML='<div class="panel">'+escapeInbox(e.message)+'</div>'}if(!inboxRefreshTimer)inboxRefreshTimer=setInterval(()=>{if(location.hash==='#inbox')loadShipmentInbox()},10000)}function escapeInbox(v){return String(v||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+let inboxRefreshTimer=null,inboxLoading=false;
+function inboxTime(value){if(!value)return '';const date=new Date(value);return Number.isNaN(date.getTime())?'':date.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})}
+async function loadShipmentInbox(){
+ const box=$('shipmentInbox');if(!box||inboxLoading)return;inboxLoading=true;
+ try{
+  let s;try{s=JSON.parse(localStorage.getItem(STORE)||'null')}catch{}
+  if(!s?.access_token)throw Error('Sign in to view recipient messages.');
+  const r=await fetch(API+'/functions/v1/shipment-service',{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+s.access_token,'Content-Type':'application/json'},body:JSON.stringify({action:'chat-inbox'})});
+  const d=await r.json();if(!r.ok)throw Error(d.error||'Inbox could not be loaded.');
+  const rows=d.conversations||[];
+  box.innerHTML=rows.length?rows.map(x=>{
+   const company=x.carrier_support_name||x.carrier_name||'Assigned shipping company';
+   const preview=x.last_message?.body?.startsWith('MWCHAT_IMAGE:')?'📷 Image attachment':x.last_message?.body||'No messages yet';
+   return '<a class="inbox-conversation" href="chat.html?shipment_id='+encodeURIComponent(x.id)+'" aria-label="Open conversation for shipment '+escapeInbox(x.tracking_code)+'">'+
+    '<span class="inbox-avatar">'+escapeInbox((x.recipient_name||'R').slice(0,1).toUpperCase())+'</span>'+
+    '<span class="inbox-copy"><strong>'+escapeInbox(x.recipient_name||'Shipment recipient')+'</strong>'+
+    '<small>'+escapeInbox(company)+' · '+escapeInbox(x.title||'Shipment')+'</small>'+
+    '<span class="inbox-preview">'+escapeInbox(preview)+'</span>'+
+    '<span class="inbox-reference">WAYBILL '+escapeInbox(x.tracking_code||'')+'</span></span>'+
+    '<span class="inbox-side">'+(x.last_message?.created_at?'<time class="inbox-time">'+escapeInbox(inboxTime(x.last_message.created_at))+'</time>':'')+
+    (x.unread_count?'<b class="inbox-unread">'+x.unread_count+'</b>':'')+'</span></a>';
+  }).join(''):'<div class="panel">No shipment conversations yet. Messages sent from shipment tracking pages will appear here.</div>';
+ }catch(e){box.innerHTML='<div class="panel">'+escapeInbox(e.message)+'</div>'}
+ finally{inboxLoading=false}
+ if(!inboxRefreshTimer)inboxRefreshTimer=setInterval(()=>{if(location.hash==='#inbox')loadShipmentInbox()},10000);
+}
+function escapeInbox(v){return String(v||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 window.addEventListener('hashchange',navigate);navigate();applyPrefs();
 $('theme').addEventListener('change',()=>{localStorage.setItem('myworld-theme',$('theme').value);applyPrefs()});
 $('textSize').addEventListener('change',()=>{localStorage.setItem('myworld-text-size',$('textSize').value);applyPrefs()});
