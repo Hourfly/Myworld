@@ -23,6 +23,25 @@ button,input,select{font:inherit}a{color:inherit;text-decoration:none}button,a{-
 .brand-name{font-size:21px;font-weight:800;letter-spacing:-.7px}
 .icon-btn{width:42px;height:42px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:var(--card);color:var(--text)}
 .icon-btn svg{width:20px;height:20px}
+.menu-backdrop{position:fixed;inset:0;z-index:30;background:#050713a8;opacity:0;visibility:hidden;transition:opacity .18s,visibility .18s}
+.menu-backdrop.open{opacity:1;visibility:visible}
+.menu-drawer{position:fixed;z-index:31;top:0;right:0;width:min(88vw,380px);height:100dvh;overflow:auto;padding:20px 16px calc(24px + env(safe-area-inset-bottom));background:var(--page);border-left:1px solid var(--line);transform:translateX(102%);transition:transform .22s ease;box-shadow:-18px 0 50px #0005}
+.menu-drawer.open{transform:translateX(0)}
+.menu-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.menu-head h2{margin:0;font-size:20px}
+.menu-close{width:38px;height:38px;border:1px solid var(--line);border-radius:50%;background:var(--card);color:var(--text);font-size:21px}
+.menu-group{margin:18px 0 8px;color:var(--muted);font-size:10px;font-weight:800;letter-spacing:1.5px}
+.menu-link{width:100%;display:flex;align-items:center;gap:12px;padding:12px 10px;margin:5px 0;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--text);text-align:left}
+.menu-link .mi{width:34px;height:34px;display:grid;place-items:center;flex:none;border-radius:10px;background:#292b4a;font-size:17px}
+.menu-link strong{display:block;font-size:13px}.menu-link small{display:block;margin-top:3px;color:var(--muted);font-size:10px}
+.menu-link .arrow{margin-left:auto;color:var(--muted)}
+.menu-notice{padding:12px;border:1px solid var(--line);border-radius:12px;color:var(--muted);font-size:11px;line-height:1.5}
+.menu-page-list{display:grid;gap:9px;margin-top:16px}
+.menu-page-card{padding:15px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.menu-page-card h3{margin:0 0 6px;font-size:14px}.menu-page-card p{margin:0;color:var(--muted);font-size:12px;line-height:1.5}
+.menu-page-card .planned{display:inline-block;margin-top:9px;color:var(--violet);font-size:9px;font-weight:800;letter-spacing:.8px}
+body.menu-open{overflow:hidden}
+
 .eyebrow{margin:0 0 9px;color:var(--violet);font-size:11px;font-weight:800;letter-spacing:2px}
 h1{margin:0 0 20px;font-size:clamp(25px,5vw,34px);line-height:1.12;letter-spacing:-1.1px}
 .muted{color:var(--muted);font-size:13px;line-height:1.55}
@@ -73,6 +92,7 @@ html[data-theme="light"] .tab.active{background:#E8EAF8}
 <header class="topbar">
 <a class="brand" href="#home" aria-label="MyWorld home"><span class="logo">M</span><span class="brand-name">MyWorld</span></a>
 <button class="icon-btn" id="notifications" aria-label="Notifications" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></button>
+<button class="icon-btn" id="menuButton" aria-label="Open MyWorld menu" aria-expanded="false" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 </header>
 <main>
 <section class="view active" id="view-home">
@@ -100,8 +120,28 @@ html[data-theme="light"] .tab.active{background:#E8EAF8}
 <div class="panel"><h2>Security</h2><p class="muted">Change the password for your signed-in account.</p><div class="field"><label for="newPassword">New password</label><input id="newPassword" type="password" minlength="8" autocomplete="new-password" placeholder="At least 8 characters"></div><div class="field"><label for="confirmPassword">Confirm new password</label><input id="confirmPassword" type="password" minlength="8" autocomplete="new-password" placeholder="Repeat your new password"></div><button class="action" id="changePassword" type="button">Update password</button><p class="status" id="securityStatus" role="status"></p></div>
 <div class="panel"><h2>Account</h2><p class="muted" id="accountEmail">Checking signed-in account…</p><button class="action danger" id="signOut" type="button">Sign out</button><p class="status" id="accountStatus" role="status"></p></div>
 </section>
+<section class="view" id="view-menu-page"><p class="eyebrow">MYWORLD SERVICES</p><h1 id="menuPageTitle">Services</h1><p class="muted" id="menuPageIntro"></p><div class="menu-page-list" id="menuPageContent"></div></section>
 </main>
 </div>
+<div class="menu-backdrop" id="menuBackdrop"></div>
+<aside class="menu-drawer" id="menuDrawer" aria-label="MyWorld menu" aria-hidden="true"><div class="menu-head"><div><p class="eyebrow" style="margin-bottom:4px">YOUR DIGITAL WORLD</p><h2>MyWorld Menu</h2></div><button class="menu-close" id="menuClose" type="button" aria-label="Close menu">×</button></div>
+<p class="menu-group">FINANCE & MEMBERSHIP</p>
+<button class="menu-link" data-menu-route="wallet"><span class="mi">💰</span><span><strong>Wallet</strong><small>Balance, deposits and payments</small></span><span class="arrow">›</span></button>
+<button class="menu-link" data-menu-route="redeem"><span class="mi">🎁</span><span><strong>Redeem Gift Cards</strong><small>Submit cards for review and valuation</small></span><span class="arrow">›</span></button>
+<button class="menu-link" data-menu-route="withdraw"><span class="mi">↗</span><span><strong>Withdraw</strong><small>Request payout from available balance</small></span><span class="arrow">›</span></button>
+<button class="menu-link" data-menu-route="subscriptions"><span class="mi">👑</span><span><strong>Subscriptions</strong><small>Gold, Diamond, Platinum and Lifetime</small></span><span class="arrow">›</span></button>
+<button class="menu-link" data-menu-route="transactions"><span class="mi">📊</span><span><strong>Transaction History</strong><small>Deposits, payouts and redemptions</small></span><span class="arrow">›</span></button>
+<p class="menu-group">LEARN & EARN</p>
+<button class="menu-link" data-menu-route="trading"><span class="mi">📈</span><span><strong>Learn Trading</strong><small>Practice with virtual funds</small></span><span class="arrow">›</span></button>
+<button class="menu-link" data-menu-route="affiliate"><span class="mi">🤝</span><span><strong>Affiliate Program</strong><small>Referrals and commission programme</small></span><span class="arrow">›</span></button>
+<p class="menu-group">DEVELOPERS & COMMUNITY</p>
+<button class="menu-link" data-menu-route="api"><span class="mi">⌘</span><span><strong>API & Developers</strong><small>API access, keys and documentation</small></span><span class="arrow">›</span></button>
+<button class="menu-link" data-menu-route="community"><span class="mi">🌐</span><span><strong>WhatsApp & Telegram</strong><small>Official community channels</small></span><span class="arrow">›</span></button>
+<button class="menu-link" data-menu-route="admin-request"><span class="mi">🛡️</span><span><strong>Become an Admin</strong><small>Apply to join the MyWorld team</small></span><span class="arrow">›</span></button>
+<p class="menu-group">ACCOUNT & HELP</p>
+<button class="menu-link" data-menu-route="support"><span class="mi">🎧</span><span><strong>Help & Support</strong><small>Get help with your account</small></span><span class="arrow">›</span></button>
+<button class="menu-link" data-menu-route="security"><span class="mi">🔐</span><span><strong>Security & Verification</strong><small>Account protection and identity checks</small></span><span class="arrow">›</span></button>
+<div class="menu-notice">Financial services will only become active after secure backend, payment, pricing and admin-approval workflows are connected. Trading practice uses virtual funds only.</div></aside>
 <nav class="bottom-nav" aria-label="Main navigation">
 <a class="tab active" href="#home" data-route="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 10 9-7 9 7v10H3z"/><path d="M9 20v-7h6v7"/></svg><span>Home</span></a>
 <a class="tab" href="#projects" data-route="projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg><span>Projects</span></a>
@@ -113,7 +153,27 @@ html[data-theme="light"] .tab.active{background:#E8EAF8}
 const API='https://wjffjcaloydlkcuxychf.supabase.co',KEY='sb_publishable_sFkmhaGDNPfyyMMs5tiagQ_RBCZAOUB',STORE='sb-wjffjcaloydlkcuxychf-auth-token';
 const $=id=>document.getElementById(id);let token='';
 function applyPrefs(){const theme=localStorage.getItem('myworld-theme')||'dark',size=localStorage.getItem('myworld-text-size')||'normal';document.documentElement.dataset.theme=theme;document.documentElement.style.fontSize=size==='large'?'17px':size==='xlarge'?'19px':'16px';if($('theme'))$('theme').value=theme;if($('textSize'))$('textSize').value=size}
-function navigate(){const route=(location.hash||'#home').slice(1);const valid=['home','projects','inbox','marketplace','settings'];const active=valid.includes(route)?route:'home';document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+active));document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.route===active));window.scrollTo(0,0);if(active==='settings')applyPrefs()}
+function navigate(){const route=(location.hash||'#home').slice(1);const valid=['home','projects','inbox','marketplace','settings'];const isMenu=route.startsWith('menu-')&&!!menuPages[route.slice(5)];const active=valid.includes(route)?route:(isMenu?'menu-page':'home');document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+active));if(isMenu)renderMenuPage(route.slice(5));document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.route===active));window.scrollTo(0,0);if(active==='settings')applyPrefs()}
+
+const menuPages={
+wallet:["Wallet","Your MyWorld wallet will show available, pending and held balances. Deposits will be connected to a verified payment provider; every credit and debit must be recorded on the server.",["Available balance — loaded from your secure wallet ledger","Add money — payment checkout and verified payment webhook required","Pending balance — funds awaiting approval or settlement","Wallet activity — auditable deposits, credits and debits"]],
+redeem:["Redeem Gift Cards","Choose a supported gift-card brand, provide its denomination and upload clear card images. A live quote requires a connected pricing source; submitted cards are credited only after verification and approval.",["Supported brands and denominations — admin-managed list","Card image upload — secure private storage required","Quote — provider-backed rate with timestamp and expiry","Review status — submitted, under review, approved or rejected"]],
+withdraw:["Withdraw Funds","Request a payout from your available wallet balance. Requests must be checked against the server-side balance and sent to the administration queue for review.",["Enter amount and payout destination","Server checks available balance and withdrawal limits","Admin receives a withdrawal request and can approve or reject","Status and payout reference appear in transaction history"]],
+subscriptions:["Memberships","Compare Gold, Diamond, Platinum and Lifetime membership. Prices, benefits, billing periods and checkout must be configured before purchases are enabled.",["Gold — benefits and price to be configured","Diamond — benefits and price to be configured","Platinum — benefits and price to be configured","Lifetime — one-time purchase terms to be configured"]],
+transactions:["Transaction History","A private, server-backed record of deposits, withdrawals, gift-card submissions, membership payments and wallet adjustments.",["Filter by transaction type and date","Show amount, currency, reference and timestamp","Show pending, completed, failed or reversed status","Downloadable receipts after ledger integration"]],
+trading:["Learn Trading","A learning simulator for practice only. It must use clearly labelled virtual funds and simulated orders; it is not a brokerage account and cannot deposit or withdraw real money.",["Choose a demo account currency and virtual starting balance","Study supported market charts and educational lessons","Place simulated buy and sell orders","Track demo portfolio, profit/loss and practice history","Market data provider and simulation engine still need integration"]],
+affiliate:["Affiliate Program","Apply for a referral account, receive a tracked referral link and view eligible referrals and commissions after the programme rules and fraud checks are configured.",["Affiliate application and referral terms","Unique referral links and attribution","Commission rules, eligibility and payout schedule","Referral and commission dashboard"]],
+api:["API & Developers","Developer documentation, API access requests, scoped API keys, usage limits and audit logs. Secret keys must only be issued and stored through a secure backend.",["API documentation and integration guides","Request API access and review permissions","Scoped keys, rotation and revocation","Usage quotas, logs and webhook configuration"]],
+community:["WhatsApp & Telegram","Official MyWorld community destinations will be listed here once the verified channel URLs are supplied.",["WhatsApp Channel — official URL needs to be added","Telegram Community — official URL needs to be added","Community guidelines and safety information"]],
+"admin-request":["Become an Admin","Submit an application explaining your experience and the role you want. Applications should go to a private administration queue; submitting a request does not grant admin access.",["Applicant details and contact information","Experience, requested role and reason for applying","Review by an existing authorized administrator","Approval or rejection notification"]],
+support:["Help & Support","Find help with sign-in, payments, subscriptions, trading simulation, gift cards and account security.",["Help centre and frequently asked questions","Support ticket with reference number","Ticket status and replies","Report suspicious activity"]],
+security:["Security & Verification","Manage account protection and complete identity checks only through a secure, privacy-conscious verification process.",["Verified email and phone status","Optional multi-factor authentication","Identity verification status where legally required","Active sessions and security alerts"]]
+};
+function openMenu(){ $('menuDrawer').classList.add('open');$('menuBackdrop').classList.add('open');$('menuDrawer').setAttribute('aria-hidden','false');$('menuButton').setAttribute('aria-expanded','true');document.body.classList.add('menu-open')}
+function closeMenu(){ $('menuDrawer').classList.remove('open');$('menuBackdrop').classList.remove('open');$('menuDrawer').setAttribute('aria-hidden','true');$('menuButton').setAttribute('aria-expanded','false');document.body.classList.remove('menu-open')}
+$('menuButton').addEventListener('click',openMenu);$('menuClose').addEventListener('click',closeMenu);$('menuBackdrop').addEventListener('click',closeMenu);
+document.querySelectorAll('[data-menu-route]').forEach(b=>b.addEventListener('click',()=>{location.hash='#menu-'+b.dataset.menuRoute;closeMenu()}));
+function renderMenuPage(key){const data=menuPages[key];if(!data)return;$('menuPageTitle').textContent=data[0];$('menuPageIntro').textContent=data[1];$('menuPageContent').innerHTML=data[2].map(line=>'<div class="menu-page-card"><p>'+line.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</p><span class="planned">BACKEND SETUP REQUIRED</span></div>').join('')}
 window.addEventListener('hashchange',navigate);navigate();applyPrefs();
 $('theme').addEventListener('change',()=>{localStorage.setItem('myworld-theme',$('theme').value);applyPrefs()});
 $('textSize').addEventListener('change',()=>{localStorage.setItem('myworld-text-size',$('textSize').value);applyPrefs()});
