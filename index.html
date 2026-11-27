@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0A0D1A">
-<meta name="description" content="MyWorld — your digital world in one place.">
+<meta name="description" content="MyWorld — your digital world in one place."><link rel="manifest" href="/manifest.webmanifest"><link rel="icon" href="/assets/myworld-rabbit-icon.svg" type="image/svg+xml"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="MyWorld">
 <title>MyWorld | Your Digital World</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,9 +17,9 @@ html{min-height:100%;background:var(--page);scroll-behavior:smooth}
 body{margin:0;min-height:100vh;background:var(--page);color:var(--text);font-family:Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
 button,input,select{font:inherit}a{color:inherit;text-decoration:none}button,a{-webkit-tap-highlight-color:transparent}
 .app{width:100%;max-width:1000px;min-height:100vh;margin:0 auto;padding:18px 20px calc(var(--nav-h) + 24px + env(safe-area-inset-bottom))}
-.topbar{height:54px;display:flex;align-items:center;gap:12px;margin-bottom:28px}
-.brand{display:flex;align-items:center;gap:11px;margin-right:auto}
-.logo{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#A99BFF,#4FD1C5);color:#08101B;font-size:22px;font-weight:800}
+.topbar{height:66px;display:flex;align-items:center;gap:12px;margin-bottom:28px}
+.brand{display:flex;align-items:center;gap:11px;margin-right:auto;min-width:0}.brand img{display:block;width:190px;max-width:min(52vw,190px);height:auto;max-height:62px;object-fit:contain;object-position:left center;background:#fff;border-radius:9px;padding:3px 7px}
+.logo{display:none}
 .brand-name{font-size:21px;font-weight:800;letter-spacing:-.7px}
 .icon-btn{width:42px;height:42px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:var(--card);color:var(--text)}
 .icon-btn svg{width:20px;height:20px}
@@ -83,7 +83,7 @@ html[data-theme="light"] .tab.active{background:#E8EAF8}
 .action.danger{border:1px solid #744451;background:#321e2b;color:#ffdce6}
 .status{min-height:16px;margin:9px 0 0;color:var(--mint);font-size:12px}
 @media(min-width:700px){.app{padding-left:30px;padding-right:30px}.rooms{gap:14px}.room{min-height:145px;padding:15px}.room-icon{width:39px;height:39px}.room h3{font-size:13px}.room p{font-size:11px}}
-@media(max-width:350px){.app{padding-left:12px;padding-right:12px}.rooms{gap:6px}.room{padding:9px 7px;min-height:118px}.room h3{font-size:10px}.room p{font-size:9px}}
+@media(max-width:350px){.brand img{width:150px;max-width:48vw}.app{padding-left:12px;padding-right:12px}.rooms{gap:6px}.room{padding:9px 7px;min-height:118px}.room h3{font-size:10px}.room p{font-size:9px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
 /* Keep shipment inbox cards inside the phone viewport, regardless of message length. */
 .view{min-width:0;max-width:100%}
@@ -105,8 +105,8 @@ html[data-theme="light"] .tab.active{background:#E8EAF8}
 <body>
 <div class="app">
 <header class="topbar">
-<a class="brand" href="#home" aria-label="MyWorld home"><span class="logo">M</span><span class="brand-name">MyWorld</span></a>
-<button class="icon-btn" id="notifications" aria-label="Notifications" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></button>
+<a class="brand" href="#home" aria-label="MyWorld home"><img src="/assets/myworld-logo.svg" alt="MyWorld — Track, Connect, Explore"></a>
+<button class="icon-btn" id="installApp" aria-label="Install MyWorld app" type="button" hidden>↓</button><button class="icon-btn" id="notifications" aria-label="Notifications" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></button>
 <button class="icon-btn" id="menuButton" aria-label="Open MyWorld menu" aria-expanded="false" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 </header>
 <main>
@@ -217,6 +217,7 @@ async function loadShipmentInbox(){
 }
 function escapeInbox(v){return String(v||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 window.addEventListener('hashchange',navigate);navigate();applyPrefs();
+let myWorldInstallPrompt=null;const installButton=$('installApp');window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();myWorldInstallPrompt=event;installButton.hidden=false});installButton.addEventListener('click',async()=>{if(!myWorldInstallPrompt)return;myWorldInstallPrompt.prompt();await myWorldInstallPrompt.userChoice;myWorldInstallPrompt=null;installButton.hidden=true});window.addEventListener('appinstalled',()=>{installButton.hidden=true});if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/service-worker.js').catch(()=>{}));
 $('theme').addEventListener('change',()=>{localStorage.setItem('myworld-theme',$('theme').value);applyPrefs()});
 $('textSize').addEventListener('change',()=>{localStorage.setItem('myworld-text-size',$('textSize').value);applyPrefs()});
 $('roomSearch').addEventListener('input',()=>{const q=$('roomSearch').value.trim().toLowerCase();let n=0;document.querySelectorAll('.searchable').forEach(card=>{const match=(card.dataset.search||'').includes(q);card.hidden=!match;if(match)n++});$('roomCount').textContent=q?n+' matching':'7 experiences';$('noResults').style.display=n?'none':'block'});
