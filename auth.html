@@ -110,7 +110,7 @@ $('authForm').addEventListener('submit',async e=>{
 });
 $('googleBtn').addEventListener('click',()=>{
  const b=$('googleBtn');b.disabled=true;
- const redirect=location.origin+location.pathname;
+ const redirect='https://myworld-4by.pages.dev/auth.html';
  const url=SUPABASE_URL+'/auth/v1/authorize?provider=google&redirect_to='+encodeURIComponent(redirect)+'&apikey='+encodeURIComponent(SUPABASE_KEY);
  location.assign(url);
 });
