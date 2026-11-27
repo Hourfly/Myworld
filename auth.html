@@ -53,20 +53,70 @@ label{display:block;margin:13px 0 7px;color:#DCE2F2;font-size:12px;font-weight:6
 </main>
 
 <script>
+
 const SUPABASE_URL='https://wjffjcaloydlkcuxychf.supabase.co';
-const SUPABASE_PUBLISHABLE_KEY='sb_publishable_sFkmhaGDNPfyyMMs5tiagQ_RBCZAOUB';
-let supabase=null;
-function loadSupabaseFrom(src){return new Promise(resolve=>{const s=document.createElement('script');s.src=src;s.async=true;s.onload=()=>resolve(!!window.supabase?.createClient);s.onerror=()=>resolve(false);document.head.appendChild(s);});}
-const supabaseReady=(async()=>{let loaded=!!window.supabase?.createClient;if(!loaded)loaded=await loadSupabaseFrom('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2');if(!loaded)loaded=await loadSupabaseFrom('https://unpkg.com/@supabase/supabase-js@2');if(loaded)supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);return !!supabase;})();
+const SUPABASE_KEY='sb_publishable_sFkmhaGDNPfyyMMs5tiagQ_RBCZAOUB';
+const STORAGE_KEY='sb-wjffjcaloydlkcuxychf-auth-token';
 const $=id=>document.getElementById(id);
 let mode='login';
 function notify(text){$('message').textContent=text;$('message').classList.add('show')}
+function saveSession(data){
+ if(!data||!data.access_token)return false;
+ const session={...data,expires_at:data.expires_at||Math.floor(Date.now()/1000)+(data.expires_in||3600)};
+ localStorage.setItem(STORAGE_KEY,JSON.stringify(session));return true;
+}
+function readHashSession(){
+ const hash=new URLSearchParams(location.hash.slice(1));
+ const access_token=hash.get('access_token'),refresh_token=hash.get('refresh_token');
+ if(access_token&&refresh_token){saveSession({access_token,refresh_token,token_type:hash.get('token_type')||'bearer',expires_in:Number(hash.get('expires_in')||3600)});history.replaceState(null,'',location.pathname+location.search);return true;}
+ return false;
+}
+async function getSession(){
+ readHashSession();
+ let s;try{s=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null')}catch(_){s=null}
+ if(!s?.access_token)return null;
+ if(s.expires_at&&s.expires_at<Date.now()/1000+30&&s.refresh_token){
+  const r=await fetch(SUPABASE_URL+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:s.refresh_token})});
+  const d=await r.json();if(!r.ok)throw new Error(d.msg||d.message||d.error_description||'Your session expired. Please sign in again.');
+  saveSession(d);s=JSON.parse(localStorage.getItem(STORAGE_KEY));
+ }
+ return s;
+}
+async function authRequest(path,body){
+ const r=await fetch(SUPABASE_URL+path,{method:'POST',headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'},body:JSON.stringify(body)});
+ const d=await r.json().catch(()=>({}));
+ if(!r.ok)throw new Error(d.msg||d.message||d.error_description||d.error||'Authentication request failed ('+r.status+').');
+ return d;
+}
 function setMode(next){mode=next;const signup=mode==='signup';$('loginTab').classList.toggle('active',!signup);$('signupTab').classList.toggle('active',signup);$('loginTab').setAttribute('aria-selected',String(!signup));$('signupTab').setAttribute('aria-selected',String(signup));$('nameField').hidden=!signup;$('phoneField').hidden=!signup;$('fullName').required=signup;$('submitBtn').textContent=signup?'Create account':'Sign in';$('password').autocomplete=signup?'new-password':'current-password';$('message').classList.remove('show')}
-$('loginTab').addEventListener('click',()=>setMode('login'));$('signupTab').addEventListener('click',()=>setMode('signup'));
-$('authForm').addEventListener('submit',async e=>{e.preventDefault();const button=$('submitBtn');button.disabled=true;button.textContent='Please wait…';try{if(!await supabaseReady)throw new Error('The sign-in service could not load. Please check your connection and refresh.');let result;if(mode==='signup'){result=await supabase.auth.signUp({email:$('email').value.trim(),password:$('password').value,options:{data:{full_name:$('fullName').value.trim(),phone:$('phone').value.trim()||null},emailRedirectTo:location.origin+'/index.html'}});if(!result.error)notify(result.data.session?'Account created. Opening MyWorld…':'Account created. Check your email to confirm your address before signing in.')}else{result=await supabase.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(!result.error)location.replace('index.html')}if(result.error)notify(result.error.message)}catch(err){notify(err.message||'Something went wrong. Please try again.')}finally{button.disabled=false;button.textContent=mode==='signup'?'Create account':'Sign in'}});
-$('googleBtn').addEventListener('click',async()=>{const googleButton=$('googleBtn');googleButton.disabled=true;try{if(!await supabaseReady)throw new Error('The sign-in service could not load. Please check your connection and refresh.');const {error}=await supabase.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+'/index.html'}});if(error)notify(error.message)}catch(err){notify(err.message||'Google sign-in could not start.')}finally{googleButton.disabled=false}});
+$('loginTab').addEventListener('click',()=>setMode('login'));
+$('signupTab').addEventListener('click',()=>setMode('signup'));
+$('authForm').addEventListener('submit',async e=>{
+ e.preventDefault();const button=$('submitBtn');button.disabled=true;button.textContent='Please wait…';
+ try{
+  const email=$('email').value.trim(),password=$('password').value;
+  let data;
+  if(mode==='signup'){
+   data=await authRequest('/auth/v1/signup',{email,password,data:{full_name:$('fullName').value.trim(),phone:$('phone').value.trim()||null},gotrue_meta_security:{captcha_token:null}});
+   if(saveSession(data)){notify('Account created. Opening MyWorld…');location.replace('index.html');return;}
+   notify('Account created. Check your email to confirm your address, then sign in.');
+  }else{
+   data=await authRequest('/auth/v1/token?grant_type=password',{email,password});
+   if(!saveSession(data))throw new Error('Sign-in succeeded but no session was returned. Please try again.');
+   location.replace('index.html');
+  }
+ }catch(err){notify(err.message||'Something went wrong. Please try again.');}
+ finally{button.disabled=false;button.textContent=mode==='signup'?'Create account':'Sign in';}
+});
+$('googleBtn').addEventListener('click',()=>{
+ const b=$('googleBtn');b.disabled=true;
+ const redirect=location.origin+location.pathname;
+ const url=SUPABASE_URL+'/auth/v1/authorize?provider=google&redirect_to='+encodeURIComponent(redirect)+'&apikey='+encodeURIComponent(SUPABASE_KEY);
+ location.assign(url);
+});
 $('whatsappBtn').addEventListener('click',()=>notify('WhatsApp verification is not connected yet. It needs a WhatsApp OTP provider and credentials before this button can send a real code.'));
-supabaseReady.then(ready=>{if(ready)supabase.auth.getSession().then(({data})=>{if(data.session)location.replace('index.html')}).catch(()=>{});});
+(async()=>{try{if(readHashSession()){location.replace('index.html');return;}const s=await getSession();if(s)location.replace('index.html');}catch(err){localStorage.removeItem(STORAGE_KEY);notify(err.message);}})();
+
 </script>
 </body>
 </html>
