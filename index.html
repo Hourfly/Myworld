@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090d18">
+  <title>MyWorld — Your world, connected</title>
+  <meta name="description" content="MyWorld brings your projects, creative tools, tracking and digital marketplace together.">
+  <style>
+    :root{color-scheme:dark;--bg:#090d18;--panel:rgba(255,255,255,.065);--line:rgba(255,255,255,.12);--muted:#9ca9bd;--text:#f4f7ff;--accent:#8b7cff;--cyan:#54d8d0}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#242052 0,transparent 38%),radial-gradient(ellipse at 90% 35%,#103c4a 0,transparent 32%),var(--bg);color:var(--text);font:16px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+    a{color:inherit;text-decoration:none}.wrap{max-width:1180px;margin:auto;padding:24px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0 30px}.brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:1.2rem;letter-spacing:-.04em}.mark{width:38px;height:38px;border-radius:13px;background:linear-gradient(135deg,var(--accent),var(--cyan));display:grid;place-items:center;color:#080d19;font-weight:900}.nav{display:flex;gap:8px;flex-wrap:wrap}.nav a,.pill{border:1px solid var(--line);background:var(--panel);padding:9px 14px;border-radius:999px;color:#dce4f4;font-size:.88rem}
+    .hero{padding:62px 0 46px;max-width:780px}.eyebrow{color:#a99fff;text-transform:uppercase;letter-spacing:.16em;font-size:.75rem;font-weight:800}.hero h1{font-size:clamp(2.7rem,7vw,5.6rem);line-height:.99;letter-spacing:-.07em;margin:18px 0}.hero h1 span{background:linear-gradient(90deg,#b6aaff,#69e5dc);background-clip:text;color:transparent}.hero p{color:var(--muted);font-size:1.08rem;max-width:620px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.btn{display:inline-block;padding:12px 19px;border-radius:14px;background:linear-gradient(110deg,#a69aff,#67ded5);color:#08101b;font-weight:800}.btn.secondary{background:var(--panel);border:1px solid var(--line);color:var(--text)}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:25px 0 16px}.section-head h2{margin:0;font-size:1.35rem;letter-spacing:-.04em}.section-head p{margin:0;color:var(--muted);font-size:.9rem}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.card{border:1px solid var(--line);background:linear-gradient(145deg,rgba(255,255,255,.09),rgba(255,255,255,.035));border-radius:22px;padding:22px;min-height:190px;backdrop-filter:blur(18px)}.ico{width:43px;height:43px;border-radius:14px;background:rgba(139,124,255,.18);display:grid;place-items:center;font-size:1.25rem}.card h3{margin:18px 0 6px}.card p{margin:0;color:var(--muted);font-size:.92rem}.status{display:inline-block;margin-top:14px;color:#a99fff;font-size:.75rem;font-weight:700;letter-spacing:.04em}footer{color:#78869d;font-size:.82rem;padding:42px 0 20px}
+    @media(max-width:800px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{padding-top:40px}}@media(max-width:520px){.wrap{padding:18px}.top{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}.hero{padding:28px 0}.nav a{font-size:.8rem;padding:8px 11px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header class="top">
+      <a class="brand" href="#" aria-label="MyWorld home"><span class="mark">M</span> MyWorld</a>
+      <nav class="nav" aria-label="Main navigation"><a href="#home">Home</a><a href="#projects">Projects</a><a href="#profile">Profile</a><a href="#settings">Settings</a></nav>
+    </header>
+    <section class="hero" id="home">
+      <div class="eyebrow">One space. Many possibilities.</div>
+      <h1>Your world,<br><span>connected.</span></h1>
+      <p>Bring your creative work, projects, digital services and journeys together in one beautifully simple space. Welcome to MyWorld.</p>
+      <div class="actions"><a class="btn" href="#projects">Explore MyWorld ↗</a><a class="btn secondary" href="#about">Discover the platform</a></div>
+    </section>
+    <section id="projects">
+      <div class="section-head"><div><h2>Explore your workspace</h2><p>Tools and services, together in one place.</p></div></div>
+      <div class="grid">
+        <article class="card"><div class="ico">🎨</div><h3>Creative Studio</h3><p>Discover creative tools for images, video and visual projects.</p><span class="status">WORKSPACE PREVIEW</span></article>
+        <article class="card"><div class="ico">📍</div><h3>Live Tracking</h3><p>Keep journeys and shipments organized with clear tracking updates.</p><span class="status">WORKSPACE PREVIEW</span></article>
+        <article class="card"><div class="ico">🛍️</div><h3>Digital Marketplace</h3><p>Explore digital products, services and useful resources.</p><span class="status">WORKSPACE PREVIEW</span></article>
+        <article class="card"><div class="ico">🌐</div><h3>SpiderWEB</h3><p>Create a lightweight portfolio site for your work and services.</p><span class="status">WORKSPACE PREVIEW</span></article>
+        <article class="card"><div class="ico">💬</div><h3>Business Chat Studio</h3><p>Build clearly labelled sample chat layouts for presentations.</p><span class="status">WORKSPACE PREVIEW</span></article>
+        <article class="card"><div class="ico">👤</div><h3>Your Profile</h3><p>Manage your personal workspace and account preferences.</p><span class="status">WORKSPACE PREVIEW</span></article>
+      </div>
+    </section>
+    <footer id="about">© <span id="year"></span> MyWorld. Built to bring your digital world together.</footer>
+  </main>
+  <script>document.getElementById('year').textContent=new Date().getFullYear();</script>
+</body>
+</html>
