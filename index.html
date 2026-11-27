@@ -1,195 +1,127 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0A0D1A">
-  <meta name="description" content="MyWorld — your digital world in one place.">
-  <title>MyWorld | Your Digital World</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    /* MyWorld theme — edit these variables to change the palette */
-    :root {
-      color-scheme: dark;
-      --page: #0A0D1A;
-      --card: #141A2E;
-      --border: #232B47;
-      --text: #F2F4FA;
-      --muted: #A3ABC2;
-      --violet: #A99BFF;
-      --teal: #4FD1C5;
-      --nav-height: 76px;
-    }
-    html[data-theme="light"] { color-scheme: light; --page:#F3F5FB; --card:#FFFFFF; --border:#DCE2EF; --text:#172033; --muted:#65718A; }\n    * { box-sizing: border-box; }
-    html { min-height: 100%; background: var(--page); }
-    body {
-      margin: 0; min-height: 100vh; background: var(--page); color: var(--text);
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      -webkit-font-smoothing: antialiased;
-    }
-    button, input { font: inherit; }
-    a { color: inherit; text-decoration: none; }
-    button, a { -webkit-tap-highlight-color: transparent; }
-    .shell { width: 100%; max-width: 430px; min-height: 100vh; margin: 0 auto; padding: 20px 16px calc(var(--nav-height) + 34px + env(safe-area-inset-bottom)); }
-    .header { display: flex; align-items: center; gap: 11px; min-height: 48px; margin-bottom: 30px; }
-    .brand { display: flex; align-items: center; gap: 11px; min-width: 0; margin-right: auto; }
-    .logo { width: 40px; height: 40px; flex: 0 0 40px; display: grid; place-items: center; border-radius: 13px; color: #08101B; background: linear-gradient(135deg,#A99BFF,#4FD1C5); font-size: 22px; font-weight: 800; }
-    .brand-name { font-size: 20px; line-height: 1; font-weight: 800; letter-spacing: -.7px; }
-    .header-btn { width: 44px; height: 44px; min-width: 44px; display: grid; place-items: center; border: 1px solid var(--border); border-radius: 50%; background: var(--card); color: var(--text); position: relative; }
-    .header-btn svg { width: 21px; height: 21px; }
-    .avatar { border: 0; border-radius: 50%; color: white; background: linear-gradient(135deg,#5D82FF,#A99BFF); font-weight: 700; font-size: 17px; }
-    .eyebrow { margin: 0 0 10px; color: var(--violet); font-size: 12px; font-weight: 800; letter-spacing: 2px; }
-    h1 { margin: 0 0 24px; font-size: 30px; line-height: 1.15; font-weight: 800; letter-spacing: -1.25px; }
-    .search { height: 48px; display: flex; align-items: center; gap: 12px; padding: 0 14px; margin-bottom: 18px; border: 1px solid var(--border); border-radius: 14px; background: var(--card); }
-    .search svg { width: 20px; height: 20px; flex: 0 0 auto; color: var(--muted); }
-    .search input { width: 100%; min-width: 0; padding: 0; border: 0; outline: 0; color: var(--text); background: transparent; font-size: 14px; }
-    .search input::placeholder { color: #858EA7; opacity: 1; }
-    .hero { min-height: 98px; display: flex; align-items: center; gap: 14px; padding: 16px; margin-bottom: 20px; border-radius: 20px; background: linear-gradient(110deg,#2A2470 0%,#203D68 55%,#0F5C63 100%); transition: transform .18s ease, filter .18s ease; }
-    .hero:active, .room:active { transform: scale(.985); }
-    .hero-icon { width: 48px; height: 48px; flex: 0 0 48px; display: grid; place-items: center; border-radius: 16px; background: #FFFFFF20; color: white; }
-    .hero-icon svg { width: 28px; height: 28px; }
-    .hero-copy { min-width: 0; flex: 1; }
-    .hero h2 { margin: 0 0 4px; font-size: 17px; line-height: 1.2; font-weight: 700; }
-    .hero p { margin: 0; color: #D3D9EA; font-size: 13px; line-height: 1.45; }
-    .chevron { width: 22px; height: 22px; flex: 0 0 auto; }
-    .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 12px; }
-    .section-heading h2 { margin: 0; font-size: 18px; font-weight: 700; letter-spacing: -.5px; }
-    .section-heading span { color: var(--muted); font-size: 12px; white-space: nowrap; }
-    .rooms { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
-    .room { min-width: 0; min-height: 150px; padding: 14px; display: flex; flex-direction: column; align-items: flex-start; border: 1px solid var(--border); border-radius: 18px; background: var(--card); transition: border-color .18s ease, transform .18s ease, background .18s ease; }
-    .room:hover { border-color: #465176; background: #182039; }
-    .room-icon { width: 40px; height: 40px; flex: 0 0 40px; display: grid; place-items: center; margin-bottom: 12px; border-radius: 13px; }
-    .room-icon svg { width: 22px; height: 22px; }
-    .blue { color: #80B4FF; background: #263653; }
-    .purple { color: #C6A1FF; background: #302C4C; }
-    .orange { color: #FFB36A; background: #39323A; }
-    .teal { color: #55DCC4; background: #1D3A42; }
-    .pink { color: #FF86B5; background: #3A2A43; }
-    .green { color: #9BEA62; background: #293B35; }
-    .room h3 { margin: 0 0 3px; font-size: 14px; line-height: 1.25; font-weight: 700; }
-    .room p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.4; }\n    .room::after { content: "COMING SOON"; display: inline-flex; align-self: flex-start; margin-top: auto; padding: 5px 8px; border: 1px solid #A99BFF55; border-radius: 999px; color: #C9C0FF; background: #A99BFF12; font-size: 9px; font-weight: 800; letter-spacing: .7px; }\n    .hero-copy::after { content: "COMING SOON"; display: inline-flex; margin-top: 8px; padding: 4px 8px; border: 1px solid #FFFFFF55; border-radius: 999px; color: #FFFFFF; background: #FFFFFF18; font-size: 9px; font-weight: 800; letter-spacing: .7px; }
-    .empty { display: none; grid-column: 1/-1; padding: 22px 12px; text-align: center; color: var(--muted); border: 1px dashed var(--border); border-radius: 16px; font-size: 13px; }
-    .bottom-nav { position: fixed; z-index: 5; left: 50%; bottom: 0; transform: translateX(-50%); width: min(100%,430px); display: grid; grid-template-columns: repeat(5,1fr); gap: 4px; padding: 8px 10px calc(8px + env(safe-area-inset-bottom)); border: 1px solid var(--border); border-bottom: 0; border-radius: 24px 24px 0 0; background: rgba(20,26,46,.96); backdrop-filter: blur(18px); }
-    .tab { min-width: 0; min-height: 56px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; border: 0; border-radius: 15px; background: transparent; color: var(--muted); font-size: 10px; font-weight: 600; }
-    .tab svg { width: 20px; height: 20px; }
-    .tab.active { color: var(--text); background: #232B47; }
-    .header-btn:focus-visible, .hero:focus-visible, .room:focus-visible, .tab:focus-visible, .search input:focus-visible { outline: 2px solid var(--violet); outline-offset: 3px; }
-    @media (min-width: 600px) { body { background: #070A13; } .shell { border-left: 1px solid #151B2C; border-right: 1px solid #151B2C; } }
-    @media (prefers-reduced-motion: reduce) { *,*::before,*::after { scroll-behavior: auto !important; transition: none !important; } }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0A0D1A">
+<meta name="description" content="MyWorld — your digital world in one place.">
+<title>MyWorld | Your Digital World</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--page:#0A0D1A;--card:#141A2E;--line:#252D47;--text:#F2F4FA;--muted:#A3ABC2;--violet:#A99BFF;--mint:#4FD1C5;--nav-h:70px}
+html[data-theme="light"]{color-scheme:light;--page:#F3F5FB;--card:#fff;--line:#DCE2EF;--text:#172033;--muted:#65718A}
+*{box-sizing:border-box}
+html{min-height:100%;background:var(--page);scroll-behavior:smooth}
+body{margin:0;min-height:100vh;background:var(--page);color:var(--text);font-family:Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit}a{color:inherit;text-decoration:none}button,a{-webkit-tap-highlight-color:transparent}
+.app{width:100%;max-width:1000px;min-height:100vh;margin:0 auto;padding:18px 20px calc(var(--nav-h) + 24px + env(safe-area-inset-bottom))}
+.topbar{height:54px;display:flex;align-items:center;gap:12px;margin-bottom:28px}
+.brand{display:flex;align-items:center;gap:11px;margin-right:auto}
+.logo{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#A99BFF,#4FD1C5);color:#08101B;font-size:22px;font-weight:800}
+.brand-name{font-size:21px;font-weight:800;letter-spacing:-.7px}
+.icon-btn{width:42px;height:42px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:var(--card);color:var(--text)}
+.icon-btn svg{width:20px;height:20px}
+.eyebrow{margin:0 0 9px;color:var(--violet);font-size:11px;font-weight:800;letter-spacing:2px}
+h1{margin:0 0 20px;font-size:clamp(25px,5vw,34px);line-height:1.12;letter-spacing:-1.1px}
+.muted{color:var(--muted);font-size:13px;line-height:1.55}
+.search{height:50px;display:flex;align-items:center;gap:11px;padding:0 14px;margin:0 0 16px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.search svg{width:20px;height:20px;flex:none;color:var(--muted)}
+.search input{width:100%;min-width:0;border:0;outline:0;background:transparent;color:var(--text);font-size:16px}
+.search input::placeholder{color:var(--muted)}
+.hero{min-height:92px;display:flex;align-items:center;gap:13px;padding:15px;margin:0 0 21px;border-radius:18px;background:linear-gradient(110deg,#2A2470,#203D68 55%,#0F5C63)}
+.hero-icon{width:44px;height:44px;flex:none;display:grid;place-items:center;border-radius:14px;background:#ffffff20}
+.hero-icon svg{width:25px;height:25px}
+.hero-copy{min-width:0;flex:1}.hero h2{margin:0 0 4px;font-size:16px}.hero p{margin:0;color:#D3D9EA;font-size:12px;line-height:1.4}
+.chevron{width:20px;height:20px;flex:none}
+.section-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 11px}
+.section-heading h2{margin:0;font-size:18px;letter-spacing:-.4px}.section-heading span{color:var(--muted);font-size:11px}
+.rooms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.room{min-width:0;min-height:126px;padding:11px 9px;display:flex;flex-direction:column;align-items:flex-start;border:1px solid var(--line);border-radius:15px;background:var(--card);transition:border-color .16s,transform .16s}
+.room:active{transform:scale(.98)}.room:hover{border-color:#59658b}
+.room-icon{width:34px;height:34px;flex:none;display:grid;place-items:center;margin-bottom:9px;border-radius:11px}
+.room-icon svg{width:19px;height:19px}
+.blue{color:#80B4FF;background:#263653}.purple{color:#C6A1FF;background:#302C4C}.orange{color:#FFB36A;background:#39323A}.teal{color:#55DCC4;background:#1D3A42}.pink{color:#FF86B5;background:#3A2A43}.green{color:#9BEA62;background:#293B35}
+.room h3{margin:0 0 3px;font-size:11px;line-height:1.25;font-weight:750;overflow-wrap:anywhere}
+.room p{margin:0;color:var(--muted);font-size:10px;line-height:1.35}
+.room .status-tag{margin-top:auto;padding-top:7px;color:#BEB4FF;font-size:8px;font-weight:800;letter-spacing:.5px}
+.empty{display:none;grid-column:1/-1;padding:20px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px;font-size:13px}
+.bottom-nav{position:fixed;z-index:10;left:50%;bottom:0;transform:translateX(-50%);width:min(100%,1000px);display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:7px 12px calc(7px + env(safe-area-inset-bottom));border:1px solid var(--line);border-bottom:0;border-radius:20px 20px 0 0;background:color-mix(in srgb,var(--card) 95%,transparent);backdrop-filter:blur(18px)}
+.tab{min-width:0;min-height:52px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:3px;border:0;border-radius:13px;background:transparent;color:var(--muted);font-size:10px;font-weight:650}
+.tab svg{width:20px;height:20px}.tab.active{background:#252E4B;color:var(--text)}
+html[data-theme="light"] .tab.active{background:#E8EAF8}
+.view{display:none}.view.active{display:block}
+.panel{padding:19px;margin-top:18px;border:1px solid var(--line);border-radius:17px;background:var(--card)}
+.panel h2{margin:0 0 7px;font-size:16px}.panel p{margin:0}
+.setting{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 0;border-top:1px solid var(--line)}
+.setting strong{display:block;font-size:13px}.setting small{display:block;margin-top:4px;color:var(--muted);font-size:11px;line-height:1.4}
+.field{margin-top:13px}.field label{display:block;margin:0 0 7px;font-size:12px;font-weight:650}
+.field input,.setting select{height:43px;padding:0 11px;border:1px solid var(--line);border-radius:10px;background:var(--page);color:var(--text);font-size:16px}
+.field input{width:100%}.setting select{max-width:125px;font-size:13px}
+.action{width:100%;min-height:44px;margin-top:12px;padding:10px 14px;border:0;border-radius:11px;background:linear-gradient(100deg,var(--violet),var(--mint));color:#09131c;font-weight:800}
+.action.secondary{border:1px solid var(--line);background:var(--page);color:var(--text)}
+.action.danger{border:1px solid #744451;background:#321e2b;color:#ffdce6}
+.status{min-height:16px;margin:9px 0 0;color:var(--mint);font-size:12px}
+@media(min-width:700px){.app{padding-left:30px;padding-right:30px}.rooms{gap:14px}.room{min-height:145px;padding:15px}.room-icon{width:39px;height:39px}.room h3{font-size:13px}.room p{font-size:11px}}
+@media(max-width:350px){.app{padding-left:12px;padding-right:12px}.rooms{gap:6px}.room{padding:9px 7px;min-height:118px}.room h3{font-size:10px}.room p{font-size:9px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+</style>
 </head>
 <body>
-  <main class="shell">
-    <!-- Header -->
-    <header class="header">
-      <a class="brand" href="index.html" aria-label="MyWorld home">
-        <span class="logo" aria-hidden="true">M</span><span class="brand-name">MyWorld</span>
-      </a>
-      <a class="header-btn" href="notifications.html" aria-label="Notifications">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg>
-      </a>
-      
-    </header>
-
-    <!-- Welcome -->
-    <p class="eyebrow">YOUR DIGITAL WORLD</p>
-    <h1>Welcome back, G</h1>
-
-    <!-- Live room search -->
-    <label class="search">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg>
-      <input id="roomSearch" type="search" placeholder="Search rooms, tools, projects" autocomplete="off" aria-label="Search rooms, tools and projects">
-    </label>
-
-    <!-- Featured room -->
-    <a class="hero searchable" href="live-tracking.html" data-search="live tracking shipment waybills route progress connected messages">
-      <span class="hero-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-8-8 18-2-8-8-2Z"/><path d="m11 13 5-5"/></svg>
-      </span>
-      <span class="hero-copy"><h2>Live Tracking</h2><p>Waybills, route progress and connected messages.</p></span>
-      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
-    </a>
-
-    <!-- Six additional rooms -->
-    <section aria-labelledby="moreRoomsTitle">
-      <div class="section-heading"><h2 id="moreRoomsTitle">Explore MyWorld</h2><span id="roomCount">7 rooms · in development</span></div>
-      <div class="rooms" id="roomGrid">
-        <a class="room searchable" href="fly-abroad.html" data-search="fly abroad flights documents journeys travel">
-          <span class="room-icon blue" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m2 16 20-5-20-5 4 5-4 5Z"/><path d="m6 11-2 8 6-6"/></svg></span>
-          <h3>Fly Abroad</h3><p>Flights, documents and journeys.</p>
-        </a>
-        <a class="room searchable" href="identify-me.html" data-search="identify me resources admins country links">
-          <span class="room-icon purple" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2.5" width="16" height="19" rx="3"/><circle cx="12" cy="9" r="2.6"/><path d="M8 17c1.1-2.4 6.9-2.4 8 0"/></svg></span>
-          <h3>Identify Me</h3><p>Resources from admins.</p>
-        </a>
-        <a class="room searchable" href="hail-ai-mary.html" data-search="hail ai mary image video studio headswap">
-          <span class="room-icon orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2.8 2.1 6.1 6.1 2.1-6.1 2.1-2.1 6.1-2.1-6.1-6.1-2.1 6.1-2.1L12 2.8Z"/></svg></span>
-          <h3>HAIL AI Mary</h3><p>AI image and video studio.</p>
-        </a>
-        <a class="room searchable" href="business-chat.html" data-search="business chat whatsapp instagram mockups messages">
-          <span class="room-icon teal" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.2a7.8 7.8 0 0 1-8 7.8H6l-3 2v-6a8 8 0 1 1 17-3.8Z"/><path d="M8 10h8M8 14h5"/></svg></span>
-          <h3>Business Chat</h3><p>Fictional chat mockups.</p>
-        </a>
-        <a class="room searchable" href="my-social.html" data-search="my social digital services subscriptions marketplace">
-          <span class="room-icon pink" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="7.5" r="3.2"/><path d="M2.5 20a6 6 0 0 1 12 0M16 4.8a3 3 0 0 1 0 5.8M17 14a5 5 0 0 1 4.5 5"/></svg></span>
-          <h3>My Social</h3><p>Digital services and plans.</p>
-        </a>
-        <a class="room searchable" href="spiderweb.html" data-search="spiderweb portfolio website builder hosting">
-          <span class="room-icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4"/></svg></span>
-          <h3>SpiderWEB</h3><p>Build a portfolio site.</p>
-        </a>
-        <p class="empty" id="noResults">No rooms match your search.</p>
-      </div>
-    </section>
-  </main>
-
-  <!-- Fixed bottom navigation -->
-  <nav class="bottom-nav" aria-label="Main navigation">
-    <a class="tab active" href="index.html" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10H3z"/><path d="M9 20v-7h6v7"/></svg><span>Home</span></a>
-    <a class="tab" href="projects.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg><span>Projects</span></a>
-    <a class="tab" href="inbox.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="15" rx="2.5"/><path d="m4 6 8 7 8-7"/></svg><span>Inbox</span></a>
-    <a class="tab" href="marketplace.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h18l-1.5-5h-15L3 9Z"/><path d="M5 9v11h14V9M9 20v-6h6v6"/></svg><span>Marketplace</span></a>
-    <a class="tab" href="settings.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.7 2.9-.2-.1a1.7 1.7 0 0 0-1.8.2l-.2.1h-3.4l-.1-.2a1.7 1.7 0 0 0-1.5-1l-.2-.1-1.7-2.9.1-.2a1.7 1.7 0 0 0-.3-1.8l-.1-.2v-3.4l.2-.1a1.7 1.7 0 0 0 1-1.5l.1-.2 2.9-1.7.2.1a1.7 1.7 0 0 0 1.8-.3l.2-.1h3.4l.1.2a1.7 1.7 0 0 0 1.5 1l.2.1 1.7 2.9-.1.2a1.7 1.7 0 0 0 .3 1.8l.1.2v3.4z"/></svg><span>Settings</span></a>
-  </nav>
-
-  <script>
-    (function(){document.documentElement.dataset.theme=localStorage.getItem("myworld-theme")||"dark";})();
-  </script>
-  <script>
-    // Filter both the featured Live Tracking card and the six room cards as the user types.
-    const searchInput = document.getElementById('roomSearch');
-    const searchableCards = [...document.querySelectorAll('.searchable')];
-    const roomCount = document.getElementById('roomCount');
-    const noResults = document.getElementById('noResults');
-
-    searchInput.addEventListener('input', () => {
-      const query = searchInput.value.trim().toLowerCase();
-      let visible = 0;
-      searchableCards.forEach(card => {
-        const matches = card.dataset.search.toLowerCase().includes(query);
-        card.hidden = !matches;
-        if (matches) visible++;
-      });
-      roomCount.textContent = query ? visible + (visible === 1 ? ' match' : ' matches') : '7 rooms · in development';
-      noResults.style.display = visible === 0 ? 'block' : 'none';
-    });
-  </script>
-  <script>
-    (async function () {
-      const base='https://wjffjcaloydlkcuxychf.supabase.co', key='sb_publishable_sFkmhaGDNPfyyMMs5tiagQ_RBCZAOUB', store='sb-wjffjcaloydlkcuxychf-auth-token';
-      try {
-        let s=JSON.parse(localStorage.getItem(store)||'null');
-        if(!s?.access_token){location.replace('auth.html');return;}
-        if(s.expires_at&&s.expires_at<Date.now()/1000+30&&s.refresh_token){
-          const rr=await fetch(base+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{apikey:key,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:s.refresh_token})});
-          const rd=await rr.json();if(!rr.ok)throw new Error('Session expired');s={...rd,expires_at:rd.expires_at||Math.floor(Date.now()/1000)+(rd.expires_in||3600)};localStorage.setItem(store,JSON.stringify(s));
-        }
-        const vr=await fetch(base+'/auth/v1/user',{headers:{apikey:key,Authorization:'Bearer '+s.access_token}});
-        if(!vr.ok){localStorage.removeItem(store);location.replace('auth.html');}
-      } catch(_){localStorage.removeItem(store);location.replace('auth.html');}
-    })();
-  </script>
-</body>
-</html>
+<div class="app">
+<header class="topbar">
+<a class="brand" href="#home" aria-label="MyWorld home"><span class="logo">M</span><span class="brand-name">MyWorld</span></a>
+<button class="icon-btn" id="notifications" aria-label="Notifications" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></button>
+</header>
+<main>
+<section class="view active" id="view-home">
+<p class="eyebrow">YOUR DIGITAL WORLD</p><h1 id="welcome">Welcome to MyWorld</h1>
+<label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg><input id="roomSearch" type="search" placeholder="Search rooms, tools, projects" autocomplete="off" aria-label="Search rooms, tools and projects"></label>
+<a class="hero" href="#projects"><span class="hero-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-8-8 18-2-8-8-2Z"/><path d="m11 13 5-5"/></svg></span><span class="hero-copy"><h2>Live Tracking</h2><p>Waybills, route progress and connected messages.</p></span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m9 5 7 7-7 7"/></svg></a>
+<div class="section-heading"><h2>Explore MyWorld</h2><span id="roomCount">7 experiences</span></div>
+<div class="rooms" id="roomGrid">
+<a class="room searchable" href="#projects" data-search="fly abroad flights documents journeys travel"><span class="room-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="m2 16 20-5-20-5 4 5-4 5Z"/><path d="m6 11-2 8 6-6"/></svg></span><h3>Fly Abroad</h3><p>Flights & journeys</p><span class="status-tag">IN DEVELOPMENT</span></a>
+<a class="room searchable" href="#projects" data-search="identify me resources admins"><span class="room-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="4" y="2.5" width="16" height="19" rx="3"/><circle cx="12" cy="9" r="2.6"/><path d="M8 17c1.1-2.4 6.9-2.4 8 0"/></svg></span><h3>Identify Me</h3><p>Admin resources</p><span class="status-tag">IN DEVELOPMENT</span></a>
+<a class="room searchable" href="#projects" data-search="hail ai mary image video studio"><span class="room-icon orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="m12 2.8 2.1 6.1 6.1 2.1-6.1 2.1-2.1 6.1-2.1-6.1-6.1-2.1 6.1-2.1L12 2.8Z"/></svg></span><h3>HAIL AI Mary</h3><p>AI image & video</p><span class="status-tag">IN DEVELOPMENT</span></a>
+<a class="room searchable" href="#projects" data-search="business chat fictional chat mockups"><span class="room-icon teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M20 11.2a7.8 7.8 0 0 1-8 7.8H6l-3 2v-6a8 8 0 1 1 17-3.8Z"/><path d="M8 10h8M8 14h5"/></svg></span><h3>Business Chat</h3><p>Chat mockups</p><span class="status-tag">IN DEVELOPMENT</span></a>
+<a class="room searchable" href="#marketplace" data-search="my social digital services subscriptions"><span class="room-icon pink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="8.5" cy="7.5" r="3.2"/><path d="M2.5 20a6 6 0 0 1 12 0M16 4.8a3 3 0 0 1 0 5.8M17 14a5 5 0 0 1 4.5 5"/></svg></span><h3>My Social</h3><p>Digital services</p><span class="status-tag">IN DEVELOPMENT</span></a>
+<a class="room searchable" href="#projects" data-search="spiderweb portfolio website builder hosting"><span class="room-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4"/></svg></span><h3>SpiderWEB</h3><p>Portfolio builder</p><span class="status-tag">IN DEVELOPMENT</span></a>
+<p class="empty" id="noResults">No experiences match your search.</p>
+</div>
+</section>
+<section class="view" id="view-projects"><p class="eyebrow">YOUR WORKSPACE</p><h1>Projects</h1><p class="muted">Your MyWorld projects will live here, within the same app shell.</p><div class="panel"><h2>Projects workspace</h2><p class="muted">The Projects page is now part of the unified navigation. Project creation and saved project data still need their own feature implementation.</p></div></section>
+<section class="view" id="view-inbox"><p class="eyebrow">MESSAGES</p><h1>Inbox</h1><p class="muted">Messages and updates in one place.</p><div class="panel"><h2>Your inbox</h2><p class="muted">The Inbox is now part of the unified navigation. Message delivery and conversation storage need to be connected before this can display live messages.</p></div></section>
+<section class="view" id="view-marketplace"><p class="eyebrow">DISCOVER & SHOP</p><h1>Marketplace</h1><p class="muted">Explore digital products, services and useful resources from MyWorld.</p><div class="panel"><h2>Marketplace is coming soon</h2><p class="muted">The marketplace experience is now inside the shared website shell. Products and services will appear here when they are configured.</p></div></section>
+<section class="view" id="view-settings"><p class="eyebrow">PREFERENCES & SECURITY</p><h1>Settings</h1><p class="muted">Control how MyWorld looks and keep your account secure.</p>
+<div class="panel"><h2>Appearance</h2><p class="muted">Preferences are shared across all sections on this device.</p>
+<div class="setting"><div><strong>Display theme</strong><small>Choose a comfortable appearance.</small></div><select id="theme" aria-label="Display theme"><option value="dark">Dark</option><option value="light">Light</option></select></div>
+<div class="setting"><div><strong>Text size</strong><small>Adjust reading size.</small></div><select id="textSize" aria-label="Text size"><option value="normal">Normal</option><option value="large">Large</option><option value="xlarge">Extra large</option></select></div></div>
+<div class="panel"><h2>Security</h2><p class="muted">Change the password for your signed-in account.</p><div class="field"><label for="newPassword">New password</label><input id="newPassword" type="password" minlength="8" autocomplete="new-password" placeholder="At least 8 characters"></div><div class="field"><label for="confirmPassword">Confirm new password</label><input id="confirmPassword" type="password" minlength="8" autocomplete="new-password" placeholder="Repeat your new password"></div><button class="action" id="changePassword" type="button">Update password</button><p class="status" id="securityStatus" role="status"></p></div>
+<div class="panel"><h2>Account</h2><p class="muted" id="accountEmail">Checking signed-in account…</p><button class="action danger" id="signOut" type="button">Sign out</button><p class="status" id="accountStatus" role="status"></p></div>
+</section>
+</main>
+</div>
+<nav class="bottom-nav" aria-label="Main navigation">
+<a class="tab active" href="#home" data-route="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 10 9-7 9 7v10H3z"/><path d="M9 20v-7h6v7"/></svg><span>Home</span></a>
+<a class="tab" href="#projects" data-route="projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg><span>Projects</span></a>
+<a class="tab" href="#inbox" data-route="inbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4.5" width="18" height="15" rx="2.5"/><path d="m4 6 8 7 8-7"/></svg><span>Inbox</span></a>
+<a class="tab" href="#marketplace" data-route="marketplace"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9h18l-1.5-5h-15L3 9Z"/><path d="M5 9v11h14V9M9 20v-6h6v6"/></svg><span>Marketplace</span></a>
+<a class="tab" href="#settings" data-route="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 1-14 0 7 7 0 0 1 14 0"/></svg><span>Settings</span></a>
+</nav>
+<script>
+const API='https://wjffjcaloydlkcuxychf.supabase.co',KEY='sb_publishable_sFkmhaGDNPfyyMMs5tiagQ_RBCZAOUB',STORE='sb-wjffjcaloydlkcuxychf-auth-token';
+const $=id=>document.getElementById(id);let token='';
+function applyPrefs(){const theme=localStorage.getItem('myworld-theme')||'dark',size=localStorage.getItem('myworld-text-size')||'normal';document.documentElement.dataset.theme=theme;document.documentElement.style.fontSize=size==='large'?'17px':size==='xlarge'?'19px':'16px';if($('theme'))$('theme').value=theme;if($('textSize'))$('textSize').value=size}
+function navigate(){const route=(location.hash||'#home').slice(1);const valid=['home','projects','inbox','marketplace','settings'];const active=valid.includes(route)?route:'home';document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+active));document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.route===active));window.scrollTo({top:0,behavior:'instant'});if(active==='settings')applyPrefs()}
+window.addEventListener('hashchange',navigate);navigate();applyPrefs();
+$('theme').addEventListener('change',()=>{localStorage.setItem('myworld-theme',$('theme').value);applyPrefs()});
+$('textSize').addEventListener('change',()=>{localStorage.setItem('myworld-text-size',$('textSize').value);applyPrefs()});
+$('roomSearch').addEventListener('input',()=>{const q=$('roomSearch').value.trim().toLowerCase();let n=0;document.querySelectorAll('.searchable').forEach(card=>{const match=(card.dataset.search||'').includes(q);card.hidden=!match;if(match)n++});$('roomCount').textContent=q?n+' matching':'7 experiences';$('noResults').style.display=n?'none':'block'});
+$('notifications').addEventListener('click',()=>{location.hash='#inbox'});
+async function boot(){let s;try{s=JSON.parse(localStorage.getItem(STORE)||'null')}catch{}if(!s?.access_token){location.replace('auth.html');return}if(s.expires_at&&s.expires_at<Date.now()/1000+30&&s.refresh_token){const r=await fetch(API+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:s.refresh_token})});const d=await r.json();if(!r.ok)throw Error('Your session expired. Please sign in again.');s={...d,expires_at:d.expires_at||Math.floor(Date.now()/1000)+(d.expires_in||3600)};localStorage.setItem(STORE,JSON.stringify(s))}token=s.access_token;const r=await fetch(API+'/auth/v1/user',{headers:{apikey:KEY,Authorization:'Bearer '+token}});const u=await r.json();if(!r.ok)throw Error('Please sign in again.');const first=(u.user_metadata?.full_name||u.user_metadata?.name||u.email?.split('@')[0]||'there').trim().split(/\s+/)[0];$('welcome').textContent='Welcome back, '+first;$('accountEmail').textContent='Signed in as '+(u.email||'MyWorld member')}
+$('changePassword').addEventListener('click',async()=>{const a=$('newPassword').value,b=$('confirmPassword').value;if(a.length<8){$('securityStatus').textContent='Use at least 8 characters.';return}if(a!==b){$('securityStatus').textContent='The passwords do not match.';return}const btn=$('changePassword');btn.disabled=true;btn.textContent='Updating…';try{const r=await fetch(API+'/auth/v1/user',{method:'PUT',headers:{apikey:KEY,Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({password:a})});const d=await r.json().catch(()=>({}));if(!r.ok)throw Error(d.msg||d.message||'Password could not be updated.');$('newPassword').value='';$('confirmPassword').value='';$('securityStatus').textContent='Password updated successfully.'}catch(e){$('securityStatus').textContent=e.message}finally{btn.disabled=false;btn.textContent='Update password'}});
+$('signOut').addEventListener('click',async()=>{const b=$('signOut');b.disabled=true;b.textContent='Signing out…';try{if(token)await fetch(API+'/auth/v1/logout',{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+token}})}finally{localStorage.removeItem(STORE);location.replace('auth.html')}});
+boot().catch(e=>{localStorage.removeItem(STORE);$('accountStatus').textContent=e.message;setTimeout(()=>location.replace('auth.html'),1200)});
+</script>
+</body></html>
