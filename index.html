@@ -155,6 +155,9 @@
   </nav>
 
   <script>
+    (function(){document.documentElement.dataset.theme=localStorage.getItem("myworld-theme")||"dark";})();
+  </script>
+  <script>
     // Filter both the featured Live Tracking card and the six room cards as the user types.
     const searchInput = document.getElementById('roomSearch');
     const searchableCards = [...document.querySelectorAll('.searchable')];
