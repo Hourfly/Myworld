@@ -173,5 +173,17 @@
       noResults.style.display = visible === 0 ? 'block' : 'none';
     });
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // Require a valid MyWorld session before showing the private workspace.
+    (async function () {
+      const client = window.supabase.createClient(
+        'https://wjffjcaloydlkcuxychf.supabase.co',
+        'sb_publishable_sFkmhaGDNPfyyMMs5tiagQ_RBCZAOUB'
+      );
+      const { data } = await client.auth.getSession();
+      if (!data.session) location.replace('auth.html');
+    })();
+  </script>
 </body>
 </html>
