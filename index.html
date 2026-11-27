@@ -173,16 +173,19 @@
       noResults.style.display = visible === 0 ? 'block' : 'none';
     });
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // Require a valid MyWorld session before showing the private workspace.
     (async function () {
-      const client = window.supabase.createClient(
-        'https://wjffjcaloydlkcuxychf.supabase.co',
-        'sb_publishable_sFkmhaGDNPfyyMMs5tiagQ_RBCZAOUB'
-      );
-      const { data } = await client.auth.getSession();
-      if (!data.session) location.replace('auth.html');
+      const base='https://wjffjcaloydlkcuxychf.supabase.co', key='sb_publishable_sFkmhaGDNPfyyMMs5tiagQ_RBCZAOUB', store='sb-wjffjcaloydlkcuxychf-auth-token';
+      try {
+        let s=JSON.parse(localStorage.getItem(store)||'null');
+        if(!s?.access_token){location.replace('auth.html');return;}
+        if(s.expires_at&&s.expires_at<Date.now()/1000+30&&s.refresh_token){
+          const rr=await fetch(base+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{apikey:key,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:s.refresh_token})});
+          const rd=await rr.json();if(!rr.ok)throw new Error('Session expired');s={...rd,expires_at:rd.expires_at||Math.floor(Date.now()/1000)+(rd.expires_in||3600)};localStorage.setItem(store,JSON.stringify(s));
+        }
+        const vr=await fetch(base+'/auth/v1/user',{headers:{apikey:key,Authorization:'Bearer '+s.access_token}});
+        if(!vr.ok){localStorage.removeItem(store);location.replace('auth.html');}
+      } catch(_){localStorage.removeItem(store);location.replace('auth.html');}
     })();
   </script>
 </body>
