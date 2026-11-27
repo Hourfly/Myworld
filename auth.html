@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0A0D1A">
+<title>Sign in | MyWorld</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#0A0D1A;--card:#141A2E;--line:#232B47;--text:#F2F4FA;--muted:#A3ABC2;--violet:#A99BFF;--mint:#4FD1C5;--green:#9CE6B0}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;display:grid;place-items:center;padding:28px 16px;overflow-x:hidden}
+.field{position:fixed;inset:0;overflow:hidden;pointer-events:none;background:radial-gradient(ellipse at 50% 115%,#123d35 0,transparent 52%),radial-gradient(ellipse at 0 20%,#1c214a 0,transparent 50%)}
+.field:before,.field:after{content:"";position:absolute;width:150vw;height:70vh;left:-25vw;bottom:-32vh;border-radius:48%;filter:blur(38px);opacity:.45;animation:flow 13s ease-in-out infinite alternate;background:linear-gradient(100deg,#143b31,#235f4b,#173b55,#2d285e)}
+.field:after{bottom:-40vh;opacity:.32;animation-duration:18s;animation-direction:alternate-reverse;background:linear-gradient(110deg,#28684c,#163f52,#344078)}
+@keyframes flow{from{transform:translate3d(-5%,0,0) rotate(-7deg) scale(1)}to{transform:translate3d(7%,-9%,0) rotate(8deg) scale(1.15)}}
+.wrap{position:relative;width:100%;max-width:430px;z-index:1}.brand{display:flex;align-items:center;gap:12px;margin:0 0 28px}.logo{width:44px;height:44px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,var(--violet),var(--mint));color:#07121a;font-size:23px;font-weight:800}.brand strong{font-size:21px;font-weight:800;letter-spacing:-.7px}
+.panel{padding:26px 22px;border:1px solid #ffffff1b;border-radius:26px;background:#11182be8;box-shadow:0 24px 90px #0007;backdrop-filter:blur(20px)}
+.kicker{margin:0 0 9px;color:var(--mint);font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase}h1{margin:0 0 9px;font-size:29px;line-height:1.12;letter-spacing:-1.1px} .sub{margin:0 0 23px;color:var(--muted);font-size:13px;line-height:1.6}
+.switch{display:grid;grid-template-columns:1fr 1fr;padding:4px;background:#090e1d;border:1px solid var(--line);border-radius:13px;margin-bottom:20px}.switch button{height:40px;border:0;border-radius:10px;background:transparent;color:var(--muted);font-weight:700}.switch button.active{background:#252d49;color:var(--text)}
+label{display:block;margin:13px 0 7px;color:#DCE2F2;font-size:12px;font-weight:650}.field-input{width:100%;height:48px;border:1px solid var(--line);border-radius:12px;padding:0 14px;background:#0c1222;color:var(--text);outline:none;font:inherit;font-size:14px}.field-input:focus{border-color:var(--violet);box-shadow:0 0 0 3px #a99bff20}.primary,.oauth{width:100%;min-height:48px;border-radius:13px;font:inherit;font-weight:750;cursor:pointer}.primary{margin-top:18px;border:0;color:#09131c;background:linear-gradient(100deg,var(--violet),var(--mint))}.oauth{display:flex;align-items:center;justify-content:center;gap:11px;margin-top:12px;border:1px solid var(--line);background:#171f34;color:var(--text)}.oauth svg{width:19px;height:19px}.divider{display:flex;align-items:center;gap:12px;margin:17px 0;color:#7f89a3;font-size:11px}.divider:before,.divider:after{content:"";height:1px;flex:1;background:var(--line)}.whatsapp{border-color:#27543f;background:#14271f}.whatsapp:disabled{opacity:.68;cursor:not-allowed}.hint{margin:10px 0 0;color:#93a18f;font-size:11px;line-height:1.5}.message{display:none;margin-top:14px;padding:11px 12px;border-radius:11px;background:#29233b;color:#e8ddff;font-size:12px;line-height:1.5}.message.show{display:block}.legal{margin:18px 5px 0;text-align:center;color:#8f99b1;font-size:10px;line-height:1.6}.trust{margin-top:25px;text-align:center;color:#cbd2e4}.trust strong{display:block;font-size:13px}.stars{margin:7px 0 4px;color:#ffc96b;letter-spacing:4px;font-size:18px}.trust small{font-size:11px;color:var(--muted)}
+@media(prefers-reduced-motion:reduce){.field:before,.field:after{animation:none}}
+</style>
+</head>
+<body>
+<div class="field" aria-hidden="true"></div>
+<main class="wrap">
+  <div class="brand"><span class="logo">M</span><strong>MyWorld</strong></div>
+  <section class="panel">
+    <p class="kicker">Your digital world</p>
+    <h1>Let's work with your client</h1>
+    <p class="sub">Sign in to continue to your workspace, projects and connected services.</p>
+    <div class="switch" role="tablist" aria-label="Account access">
+      <button id="loginTab" class="active" type="button" role="tab" aria-selected="true">Sign in</button>
+      <button id="signupTab" type="button" role="tab" aria-selected="false">Create account</button>
+    </div>
+    <form id="authForm">
+      <div id="nameField" hidden><label for="fullName">Full name</label><input class="field-input" id="fullName" autocomplete="name" placeholder="Your full name"></div>
+      <label for="email">Email address</label><input class="field-input" id="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+      <div id="phoneField" hidden><label for="phone">WhatsApp phone number</label><input class="field-input" id="phone" type="tel" autocomplete="tel" placeholder="+234 800 000 0000"><p class="hint">Include your country code. WhatsApp verification will be enabled after its provider is connected.</p></div>
+      <label for="password">Password</label><input class="field-input" id="password" type="password" autocomplete="current-password" minlength="8" placeholder="At least 8 characters" required>
+      <button class="primary" id="submitBtn" type="submit">Sign in</button>
+    </form>
+    <div class="divider">OR CONTINUE WITH</div>
+    <button class="oauth" id="googleBtn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M21.6 12.23c0-.72-.06-1.25-.18-1.8H12v3.27h5.52a4.72 4.72 0 0 1-2.05 3.1v2.13h3.32c1.94-1.79 2.81-4.42 2.81-6.7Z"/><path fill="#34A853" d="M12 22c2.76 0 5.08-.91 6.78-2.47l-3.32-2.13c-.92.62-2.1 1.05-3.46 1.05-2.66 0-4.92-1.8-5.73-4.22H2.84v2.2A10.24 10.24 0 0 0 12 22Z"/><path fill="#FBBC05" d="M6.27 14.23a6.15 6.15 0 0 1 0-4.46v-2.2H2.84a10.01 10.01 0 0 0 0 8.86l3.43-2.2Z"/><path fill="#EA4335" d="M12 5.55c1.5 0 2.84.52 3.9 1.54l2.93-2.93C17.07 2.55 14.76 1.6 12 1.6a10.24 10.24 0 0 0-9.16 5.97l3.43 2.2C7.08 7.35 9.34 5.55 12 5.55Z"/></svg>Continue with Google</button>
+    <button class="oauth whatsapp" id="whatsappBtn" type="button" disabled aria-disabled="true">Continue with WhatsApp</button>
+    <p class="hint">WhatsApp sign-in is displayed here but won't send a code until a WhatsApp OTP provider is configured.</p>
+    <div class="message" id="message" role="status" aria-live="polite"></div>
+  </section>
+  <p class="legal">By continuing, you agree to MyWorld's Terms of Service and Privacy Policy.</p>
+  <footer class="trust"><strong>Trusted by millions</strong><div class="stars" aria-label="Five stars">★★★★★</div><small>Built for your digital world</small></footer>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL='https://wjffjcaloydlkcuxychf.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_sFkmhaGDNPfyyMMs5tiagQ_RBCZAOUB';
+const supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+const $=id=>document.getElementById(id);
+let mode='login';
+function notify(text){$('message').textContent=text;$('message').classList.add('show')}
+function setMode(next){mode=next;const signup=mode==='signup';$('loginTab').classList.toggle('active',!signup);$('signupTab').classList.toggle('active',signup);$('loginTab').setAttribute('aria-selected',String(!signup));$('signupTab').setAttribute('aria-selected',String(signup));$('nameField').hidden=!signup;$('phoneField').hidden=!signup;$('fullName').required=signup;$('submitBtn').textContent=signup?'Create account':'Sign in';$('password').autocomplete=signup?'new-password':'current-password';$('message').classList.remove('show')}
+$('loginTab').addEventListener('click',()=>setMode('login'));$('signupTab').addEventListener('click',()=>setMode('signup'));
+$('authForm').addEventListener('submit',async e=>{e.preventDefault();const button=$('submitBtn');button.disabled=true;button.textContent='Please wait…';try{let result;if(mode==='signup'){result=await supabase.auth.signUp({email:$('email').value.trim(),password:$('password').value,options:{data:{full_name:$('fullName').value.trim(),phone:$('phone').value.trim()||null},emailRedirectTo:location.origin+'/index.html'}});if(!result.error)notify(result.data.session?'Account created. Opening MyWorld…':'Account created. Check your email to confirm your address before signing in.')}else{result=await supabase.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(!result.error)location.replace('index.html')}if(result.error)notify(result.error.message)}catch(err){notify(err.message||'Something went wrong. Please try again.')}finally{button.disabled=false;button.textContent=mode==='signup'?'Create account':'Sign in'}});
+$('googleBtn').addEventListener('click',async()=>{const {error}=await supabase.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+'/index.html'}});if(error)notify(error.message)});
+$('whatsappBtn').addEventListener('click',()=>notify('WhatsApp verification is not connected yet. It needs a WhatsApp OTP provider and credentials before this button can send a real code.'));
+supabase.auth.getSession().then(({data})=>{if(data.session)location.replace('index.html')});
+</script>
+</body>
+</html>
