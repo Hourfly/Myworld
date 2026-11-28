@@ -199,6 +199,7 @@ $('homeWalletTopup')?.addEventListener('click',()=>{location.hash='#menu-wallet'
 function openMenu(){ $('menuDrawer').classList.add('open');$('menuBackdrop').classList.add('open');$('menuDrawer').setAttribute('aria-hidden','false');$('menuButton').setAttribute('aria-expanded','true');document.body.classList.add('menu-open')}
 function closeMenu(){ $('menuDrawer').classList.remove('open');$('menuBackdrop').classList.remove('open');$('menuDrawer').setAttribute('aria-hidden','true');$('menuButton').setAttribute('aria-expanded','false');document.body.classList.remove('menu-open')}
 $('menuButton').addEventListener('click',openMenu);$('menuClose').addEventListener('click',closeMenu);$('menuBackdrop').addEventListener('click',closeMenu);
+if(new URLSearchParams(location.search).get('openMenu')==='1'){history.replaceState({},document.title,location.pathname+'#home');openMenu()}
 document.querySelectorAll('[data-menu-route]').forEach(b=>b.addEventListener('click',()=>{location.hash='#menu-'+b.dataset.menuRoute;closeMenu()}));
 function renderMenuPage(key){if(key==='admin'&&(!authReady||currentUserEmail!==ADMIN_EMAIL)){location.hash='#home';return}const data=menuPages[key];if(!data)return;$('menuPageTitle').textContent=data[0];
  if(key==='admin'){renderAdminDashboard();return;}
