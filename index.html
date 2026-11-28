@@ -574,15 +574,15 @@ async function loadWallet(){
   const headers={apikey:KEY,Authorization:'Bearer '+access};
   const [w,t]=await Promise.all([
    fetch(API+'/rest/v1/wallets?select=balance_kobo,currency,updated_at&limit=1',{headers}),
-   fetch(API+'/rest/v1/payment_transactions?select=reference,provider,amount_kobo,currency,status,created_at,paid_at&order=created_at.desc&limit=10',{headers})
+   fetch(API+'/functions/v1/myworld-services',{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+access,'Content-Type':'application/json'},body:JSON.stringify({action:'wallet-history'})})
   ]);
-  const wd=await w.json().catch(()=>[]),td=await t.json().catch(()=>[]);
+  const wd=await w.json().catch(()=>[]),td=await t.json().catch(()=>({}));
   if(!w.ok)throw Error(wd.message||wd.error||'Wallet balance could not be loaded.');
   if(!t.ok)throw Error(td.message||td.error||'Transaction history could not be loaded.');
   const wallet=Array.isArray(wd)?wd[0]:wd;
   if(balance)balance.textContent=naira(wallet?.balance_kobo||0);
   const updated=$('walletUpdated');if(updated)updated.textContent=wallet?.updated_at?'Available balance · Updated '+new Date(wallet.updated_at).toLocaleString():'Available balance · No deposits yet';
-  if(history)history.innerHTML=Array.isArray(td)&&td.length?td.map(x=>{const label=x.provider==='withdrawal'?'Withdrawal':x.provider==='admin'?'Manual wallet credit':x.provider==='myworld_card'?'MyWorld Card redemption':x.status==='pending'?'Pending payment':'Wallet deposit';const sign=x.provider==='withdrawal'?'−':'+';return '<div class="setting"><div style="min-width:0"><strong>'+walletEsc(label)+'</strong><small>'+walletEsc(x.reference)+' · '+walletEsc(new Date(x.created_at).toLocaleString())+'</small></div><div style="text-align:right;flex:none"><strong>'+sign+naira(x.amount_kobo)+'</strong><small>'+walletEsc(x.status.toUpperCase())+'</small></div></div>'}).join(''):'No transactions yet. Your successful deposits will appear here.';
+  if(history)history.innerHTML=Array.isArray(td.transactions)&&td.transactions.length?td.transactions.map(x=>{const sign=x.direction==='out'?'−':'+',kind=x.direction==='out'?'out':'in';return '<div class="wallet-transfer-row"><span class="wallet-transfer-icon">'+(kind==='out'?'↗':'↙')+'</span><span class="wallet-transfer-copy"><strong>'+walletEsc(x.title||'Wallet activity')+'</strong><small>'+walletEsc(x.reference)+' · '+walletEsc(new Date(x.created_at).toLocaleString())+'</small></span><span class="wallet-transfer-amount '+kind+'">'+sign+naira(x.amount_kobo)+'</span></div>'}).join(''):'No transactions yet. Your wallet activity will appear here.';
  }catch(e){if(status)status.textContent=e.message;if(history)history.textContent='Transaction history is temporarily unavailable.'}
  finally{walletLoading=false}
 }
