@@ -175,7 +175,8 @@ const API='https://wjffjcaloydlkcuxychf.supabase.co',KEY='sb_publishable_sFkmhaG
 const $=id=>document.getElementById(id);let token='';
 function applyPrefs(){const theme=localStorage.getItem('myworld-theme')||'dark',size=localStorage.getItem('myworld-text-size')||'normal';document.documentElement.dataset.theme=theme;document.documentElement.style.fontSize=size==='large'?'17px':size==='xlarge'?'19px':'16px';if($('theme'))$('theme').value=theme;if($('textSize'))$('textSize').value=size}
 let currentUserEmail='',authReady=false;const ADMIN_EMAIL='ugohjeremiah16@gmail.com';
-function navigate(){const route=(location.hash||'#home').slice(1);const valid=['home','projects','inbox','notifications','marketplace','settings'];const requestedAdmin=route==='menu-admin';if(requestedAdmin&&authReady&&currentUserEmail!==ADMIN_EMAIL){location.hash='#home';return}const isMenu=route.startsWith('menu-')&&!!menuPages[route.slice(5)]&&(!requestedAdmin||!authReady||currentUserEmail===ADMIN_EMAIL);const active=valid.includes(route)?route:(isMenu?'menu-page':'home');document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+active));if(isMenu)renderMenuPage(route.slice(5));document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.route===active));window.scrollTo(0,0);if(active==='settings')applyPrefs();if(active==='inbox')loadShipmentInbox();if(active==='notifications')loadMyNotifications()}
+let myWorldFeatureFlags=null,featureSyncBusy=false;
+function navigate(){const route=(location.hash||'#home').slice(1);const valid=['home','projects','inbox','notifications','marketplace','settings'];const requestedAdmin=route==='menu-admin';if(requestedAdmin&&authReady&&currentUserEmail!==ADMIN_EMAIL){location.hash='#home';return}const isMenu=route.startsWith('menu-')&&!!menuPages[route.slice(5)]&&(!requestedAdmin||!authReady||currentUserEmail===ADMIN_EMAIL);const active=valid.includes(route)?route:(isMenu?'menu-page':'home');document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+active));if(isMenu)renderMenuPage(route.slice(5));document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.route===active));window.scrollTo(0,0);if(active==='settings')applyPrefs();if(active==='inbox')loadShipmentInbox();if(active==='notifications')loadMyNotifications();refreshMyWorldFeatureFlags()}
 
 const menuPages={
 wallet:["Wallet","Your MyWorld wallet will show available, pending and held balances. Deposits will be connected to a verified payment provider; every credit and debit must be recorded on the server.",["Available balance — loaded from your secure wallet ledger","Add money — payment checkout and verified payment webhook required","Pending balance — funds awaiting approval or settlement","Wallet activity — auditable deposits, credits and debits"]],
@@ -341,6 +342,7 @@ function openAdminRoom(id){
  if(id==='withdrawals'){renderAdminWithdrawals(target,head);return}
  if(id==='admin-applications'){renderAdminApplications(target,head);return}
  if(id==='notifications'){renderAdminNotifications(target,head);return}
+ if(id==='features'){renderAdminFeatureControls(target,head);return}
  if(id==='audit'){renderAdminAudit(target,head);return}
  const message=adminRoomStatus[id]||'This workspace is being prepared.';
  target.innerHTML=head+'<div class="admin-module-note"><strong>Workspace created · integration pending</strong><p>'+walletEsc(message)+'</p><p>Owner-only access is enforced for this admin area. No simulated data or fake operational actions are shown here.</p></div>';
@@ -365,6 +367,12 @@ function renderAdminNotifications(target,head){
  target.innerHTML=head+'<div class="panel"><h2>Send a notification</h2><div class="admin-form"><div><label for="mwNotifyEmail">Recipient account email</label><input id="mwNotifyEmail" type="email" placeholder="user@example.com"></div><div><label for="mwNotifyTitle">Title</label><input id="mwNotifyTitle" maxlength="120"></div><div><label for="mwNotifyBody">Message</label><textarea id="mwNotifyBody" maxlength="2000" rows="4"></textarea></div><button class="action" id="mwNotifySend" type="button">Send notification</button></div><p class="status" id="mwNotifyStatus"></p></div><div class="panel"><div class="section-heading"><h2>Recent notifications</h2><button class="action secondary" id="mwNotifyRefresh" type="button" style="width:auto">Refresh</button></div><div id="mwNotifyList" class="muted">Loading…</div></div>';
  const load=async()=>{const box=$('mwNotifyList');box.textContent='Loading…';try{const d=await adminServiceRequest('admin-notifications');box.innerHTML=(d.notifications||[]).map(n=>'<div class="menu-page-card"><strong>'+walletEsc(n.title)+'</strong><p>'+walletEsc(n.user_email)+' · '+new Date(n.created_at).toLocaleString()+'</p><p>'+walletEsc(n.body)+'</p></div>').join('')||'<p class="muted">No notifications sent.</p>'}catch(e){box.textContent=e.message}};
  $('mwNotifyRefresh').onclick=load;$('mwNotifySend').onclick=async()=>{const b=$('mwNotifySend');b.disabled=true;try{const d=await adminServiceRequest('admin-send-notification',{email:$('mwNotifyEmail').value,title:$('mwNotifyTitle').value,message:$('mwNotifyBody').value});renderServiceStatus('mwNotifyStatus','Notification delivered to '+d.target_email);$('mwNotifyBody').value='';await load()}catch(e){renderServiceStatus('mwNotifyStatus',e.message,true)}finally{b.disabled=false}};load();
+}
+function renderAdminFeatureControls(target,head){
+ const labels={wallet:'Wallet', 'myworld-card':'MyWorld Card',redeem:'Redeem Gift Cards',withdraw:'Withdraw',subscriptions:'Memberships',transactions:'Transaction History',trading:'Learn Trading',affiliate:'Affiliate Program',api:'API & Developers',community:'Community', 'admin-request':'Become an Admin',support:'Help & Support',security:'Security & Verification'};
+ target.innerHTML=head+'<div class="panel"><h2>Feature availability</h2><p class="muted">Switches are saved on the server and applied to signed-in users across the menu. Keep core account and payment services enabled unless you intentionally want to restrict access.</p><div id="mwFeatureList" class="admin-form">Loading feature controls…</div></div>';
+ const load=async()=>{const box=$('mwFeatureList');box.textContent='Loading…';try{const d=await adminServiceRequest('admin-feature-flags'),flags=d.flags||{};box.innerHTML=Object.keys(labels).map(k=>'<label class="setting" style="display:flex;justify-content:space-between;gap:12px;align-items:center"><span><strong>'+walletEsc(labels[k])+'</strong><small style="display:block;color:var(--muted)">menu route: '+walletEsc(k)+'</small></span><input type="checkbox" data-feature-key="'+k+'" '+(flags[k]!==false?'checked':'')+' style="width:22px;height:22px"></label>').join('');box.querySelectorAll('[data-feature-key]').forEach(input=>input.onchange=async()=>{input.disabled=true;try{await adminServiceRequest('admin-feature-set',{feature_key:input.dataset.featureKey,enabled:input.checked});myWorldFeatureFlags=null;await refreshMyWorldFeatureFlags(true)}catch(e){input.checked=!input.checked;alert(e.message)}finally{input.disabled=false}})}catch(e){box.textContent=e.message}};
+ load();
 }
 function renderAdminAudit(target,head){
  target.innerHTML=head+'<div class="panel"><h2>Administrator audit log</h2><p class="admin-hint">Audit records remain protected in the private database schema. A secure read-only audit endpoint still needs to be added; this room does not expose the underlying table directly.</p></div>';
@@ -392,6 +400,15 @@ async function myWorldServiceRequest(action,extra={}){
  if(!access)throw Error('Please sign in again.');
  const r=await fetch(API+'/functions/v1/myworld-services',{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+access,'Content-Type':'application/json'},body:JSON.stringify({action,...extra})});
  const d=await r.json().catch(()=>({}));if(!r.ok)throw Error(d.error||'MyWorld service request failed.');return d;
+}
+async function refreshMyWorldFeatureFlags(force=false){
+ if(!authReady||!currentUserEmail||featureSyncBusy||(!force&&myWorldFeatureFlags))return;
+ featureSyncBusy=true;
+ try{const d=await myWorldServiceRequest('feature-flags');myWorldFeatureFlags=d.flags||{};
+  document.querySelectorAll('[data-menu-route]').forEach(b=>{const key=b.dataset.menuRoute;if(key!=='admin'&&Object.prototype.hasOwnProperty.call(myWorldFeatureFlags,key))b.hidden=myWorldFeatureFlags[key]===false});
+  const route=(location.hash||'').slice(6);if(route&&Object.prototype.hasOwnProperty.call(myWorldFeatureFlags,route)&&myWorldFeatureFlags[route]===false)location.hash='#home';
+ }catch(e){/* Feature controls are fail-open if the configuration service is temporarily unavailable. */}
+ finally{featureSyncBusy=false}
 }
 function renderServiceStatus(id,message,isError=false){const el=$(id);if(el){el.textContent=message;el.style.color=isError?'#ef7777':'var(--mint)'}}
 function renderSupportPage(){
