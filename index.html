@@ -218,15 +218,19 @@ function renderMenuPage(key){if(key==='admin'&&(!authReady||currentUserEmail!==A
  if(key==='community'){$('menuPageContent').innerHTML='<a class="menu-page-card" href="https://chat.whatsapp.com/CxH7V0rcQZOB9fDSvNKUWO" target="_blank" rel="noopener noreferrer"><h3>WhatsApp Community ↗</h3><p>Join the official MyWorld WhatsApp group.</p><span class="planned">OPEN WHATSAPP</span></a><a class="menu-page-card" href="https://t.me/+9x3AK8izEDUwMWZk" target="_blank" rel="noopener noreferrer"><h3>Telegram Community ↗</h3><p>Join the official MyWorld Telegram group.</p><span class="planned">OPEN TELEGRAM</span></a>';return}
  if(key==='security'){$('menuPageContent').innerHTML='<div class="panel" style="margin-top:0"><h2>Account security</h2><p class="muted">Your MyWorld account is protected by Supabase Authentication. Use a unique password and keep your email account secure.</p><div class="menu-page-card"><strong>Signed-in account</strong><p>'+walletEsc(currentUserEmail||'Signed in')+'</p><span class="planned">AUTHENTICATED SESSION</span></div><div class="menu-page-card"><strong>Email verification</strong><p>Verification status is controlled by your account sign-in provider.</p></div><button class="action secondary" id="mwSecuritySettings" type="button">Open account settings</button></div>';$('mwSecuritySettings').onclick=()=>location.hash='#settings';return}
  $('menuPageContent').innerHTML=data[2].map(line=>'<div class="menu-page-card"><p>'+line.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</p><span class="planned">SERVICE INTEGRATION REQUIRED</span></div>').join('')}
+let inboxLoading=false,inboxRefreshTimer=null;
 function inboxTime(value){if(!value)return '';const date=new Date(value);return Number.isNaN(date.getTime())?'':date.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})}
 async function loadShipmentInbox(){
- const box=$('shipmentInbox');if(!box||inboxLoading)return;inboxLoading=true;
+ const box=$('shipmentInbox');if(!box||inboxLoading)return;
+ if(!box.dataset.cacheShown){try{const cached=localStorage.getItem('myworld-shipment-inbox-cache');if(cached){box.innerHTML=cached;box.dataset.cacheShown='1'}}catch{}}
+ inboxLoading=true;
  try{
   let s;try{s=JSON.parse(localStorage.getItem(STORE)||'null')}catch{}
   if(!s?.access_token)throw Error('Sign in to view recipient messages.');
-  const r=await fetch(API+'/functions/v1/shipment-service',{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+s.access_token,'Content-Type':'application/json'},body:JSON.stringify({action:'chat-inbox'})});
-  const d=await r.json();if(!r.ok)throw Error(d.error||'Inbox could not be loaded.');
-  const rows=d.conversations||[];
+  const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),15000);
+  let r,d;try{r=await fetch(API+'/functions/v1/shipment-service',{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+s.access_token,'Content-Type':'application/json'},body:JSON.stringify({action:'chat-inbox'}),signal:controller.signal});d=await r.json().catch(()=>({}));}finally{clearTimeout(timeout)}
+  if(!r.ok)throw Error(d.error||d.message||'Inbox could not be loaded.');
+  const rows=Array.isArray(d.conversations)?d.conversations:[];
   box.innerHTML=rows.length?rows.map(x=>{
    const company=x.carrier_support_name||x.carrier_name||'Assigned shipping company';
    const preview=x.last_message?(x.last_message.body?.startsWith('MWCHAT_IMAGE:')?'📷 Image attachment':(x.last_message.sender_role==='owner'?'You: ':'')+(x.last_message.body||'')):'No messages yet';
@@ -239,7 +243,8 @@ async function loadShipmentInbox(){
     '<span class="inbox-side">'+(x.last_message?.created_at?'<time class="inbox-time">'+escapeInbox(inboxTime(x.last_message.created_at))+'</time>':'')+
     (x.unread_count?'<b class="inbox-unread">'+x.unread_count+'</b>':'')+'</span></a>';
   }).join(''):'<div class="panel">No shipment conversations yet. Messages sent from shipment tracking pages will appear here.</div>';
- }catch(e){box.innerHTML='<div class="panel">'+escapeInbox(e.message)+'</div>'}
+  try{localStorage.setItem('myworld-shipment-inbox-cache',box.innerHTML)}catch{}
+ }catch(e){if(e.name==='AbortError')box.innerHTML='<div class="panel">The inbox is taking too long to respond. Please try again.</div>';else box.innerHTML='<div class="panel">'+escapeInbox(e.message)+'</div>'}
  finally{inboxLoading=false}
  if(!inboxRefreshTimer)inboxRefreshTimer=setInterval(()=>{if(location.hash==='#inbox')loadShipmentInbox()},10000);
 }
