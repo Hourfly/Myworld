@@ -34,7 +34,7 @@
 <script>
 const API='https://wjffjcaloydlkcuxychf.supabase.co',KEY='sb_publishable_sFkmhaGDNPfyyMMs5tiagQ_RBCZAOUB',STORE='sb-wjffjcaloydlkcuxychf-auth-token',FN=API+'/functions/v1/shipment-service';
 const params=new URLSearchParams(location.search),shipmentId=params.get('shipment_id')||'',$=id=>document.getElementById(id);
-let role=null,chatToken='',session=null,lastSignature='',timer=null,chatMode=params.get('mode')||'';
+let role=null,chatToken='',session=null,lastSignature=null,timer=null,chatMode=params.get('mode')||'';
 function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function showError(message){$('error').textContent=message;$('error').style.display='block'}
 async function api(action,data={}){const headers={'apikey':KEY,'Content-Type':'application/json'};if(chatMode==='owner'&&session?.access_token)headers.Authorization='Bearer '+session.access_token;if(chatMode==='recipient'&&chatToken)headers['x-chat-token']=chatToken;const r=await fetch(FN,{method:'POST',headers,body:JSON.stringify({action,shipment_id:shipmentId,chat_mode:chatMode,...data})});const d=await r.json();if(!r.ok)throw Error(d.error||'Chat service unavailable');return d}
