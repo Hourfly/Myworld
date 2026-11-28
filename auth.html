@@ -98,7 +98,7 @@ $('authForm').addEventListener('submit',async e=>{
   const email=$('email').value.trim(),password=$('password').value;
   let data;
   if(mode==='signup'){
-   data=await authRequest('/auth/v1/signup',{email,password,data:{full_name:$('fullName').value.trim(),phone:$('phone').value.trim()||null},gotrue_meta_security:{captcha_token:null}});
+   const referralCode=(new URLSearchParams(location.search).get('ref')||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,16);data=await authRequest('/auth/v1/signup',{email,password,data:{full_name:$('fullName').value.trim(),phone:$('phone').value.trim()||null,...(referralCode.length>=8?{myworld_referral_code:referralCode}:{})},gotrue_meta_security:{captcha_token:null}});
    if(saveSession(data)){notify('Account created. Opening MyWorld…');location.replace('index.html');return;}
    notify('Account created. Check your email to confirm your address, then sign in.');
   }else{
