@@ -18,7 +18,7 @@ body{margin:0;min-height:100vh;background:var(--page);color:var(--text);font-fam
 button,input,select{font:inherit}a{color:inherit;text-decoration:none}button,a{-webkit-tap-highlight-color:transparent}
 .app{width:100%;max-width:1000px;min-height:100vh;margin:0 auto;padding:18px 20px calc(var(--nav-h) + 24px + env(safe-area-inset-bottom))}
 .topbar{height:66px;display:flex;align-items:center;gap:12px;margin-bottom:28px}
-.brand{display:flex;align-items:center;gap:11px;margin-right:auto;min-width:0}.brand img{display:block;width:190px;max-width:min(52vw,190px);height:auto;max-height:62px;object-fit:contain;object-position:left center;background:#fff;border-radius:9px;padding:3px 7px}
+.brand{display:flex;align-items:center;gap:11px;margin-right:auto;min-width:0}.brand img{display:block;width:190px;max-width:min(52vw,190px);height:auto;max-height:62px;object-fit:contain;object-position:left center;background:transparent;border:0;border-radius:0;padding:0}.brand .brand-logo-dark{display:block}.brand .brand-logo-light{display:none}html[data-theme="light"] .brand .brand-logo-dark{display:none}html[data-theme="light"] .brand .brand-logo-light{display:block}
 .logo{display:none}
 .brand-name{font-size:21px;font-weight:800;letter-spacing:-.7px}
 .icon-btn{width:42px;height:42px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:var(--card);color:var(--text)}
@@ -110,7 +110,7 @@ html[data-theme="light"] .tab.active{background:#E8EAF8}
 <body>
 <div class="app">
 <header class="topbar">
-<a class="brand" href="#home" aria-label="MyWorld home"><img src="/assets/myworld-logo.svg" alt="MyWorld — Track, Connect, Explore"></a>
+<a class="brand" href="#home" aria-label="MyWorld home"><img class="brand-logo-dark" src="/assets/myworld-logo-dark.svg" alt="MyWorld — Track, Connect, Explore"><img class="brand-logo-light" src="/assets/myworld-logo.svg" alt="" aria-hidden="true"></a>
 <button class="icon-btn" id="installApp" aria-label="Install MyWorld app" type="button" hidden>↓</button><button class="icon-btn notification-button" id="notifications" aria-label="Notifications" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><span class="notification-badge" id="notificationBadge" hidden></span></button>
 <button class="icon-btn" id="menuButton" aria-label="Open MyWorld menu" aria-expanded="false" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 </header>
